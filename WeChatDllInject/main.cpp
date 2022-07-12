@@ -10,7 +10,7 @@
 
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #define PROCESSNAME L"WeChat.exe"
-#define DLLNAME L"WeChatDll.dll"
+#define DLLNAME L"WeChatHookDll.dll"
 
 INT_PTR InjectDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4);
 INT_PTR SocketDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4);
