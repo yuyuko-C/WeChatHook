@@ -16,8 +16,6 @@
 
 void SendTextMessage(std::wstring wxid, std::wstring message)
 {
-
-
 	// 发送消息的call
 	DWORD sendCall = moduleBaseAddr + 0x54BB1D30 - 0x54690000;
 
