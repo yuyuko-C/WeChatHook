@@ -177,7 +177,7 @@ INT_PTR SocketDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4
 	{
 		consoleHandle = handle;
 
-		client.SetEditText(handle, EDIT_DELAYSECOND, L"5");
+		client.SetEditText(handle, EDIT_DELAYSECOND, L"3");
 	}
 	else if (msg == WM_CLOSE)
 	{
