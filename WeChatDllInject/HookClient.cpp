@@ -26,9 +26,9 @@ void HookClient::SendAllTypeMessage(HWND handle)
 	for (size_t i = 0; i < wxidList.size(); i++)
 	{
 		SendTextMessage(wxidList[i], text);
-		//SendImageMessage(wxidList[i], image);
-		//SendFileMessage(wxidList[i], file);
-		//Sleep(sendInterval);
+		SendImageMessage(wxidList[i], image);
+		SendFileMessage(wxidList[i], file);
+		Sleep(sendInterval);
 	}
 	EnableWindow(GetDlgItem(handle, BTN_SEND), true);
 }

@@ -115,7 +115,6 @@ INT_PTR InjectDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4
 					{
 						WCHAR buff[1024] = { 0 };
 						wsprintfW(buff, L"%s²»´æÔÚ", fullPath.c_str());
-						M
 					}
 					else
 					{
