@@ -1,6 +1,6 @@
-﻿//{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ 生成的包含文件。
-// 供 WeChatDllInject.rc 使用
+//{{NO_DEPENDENCIES}}
+// Microsoft Visual C++ ���ɵİ����ļ���
+// �� WeChatDllInject.rc ʹ��
 //
 #define IDD_DIALOG1                     101
 #define IDD_DIALOG2                     103

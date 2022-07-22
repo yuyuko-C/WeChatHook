@@ -48,15 +48,16 @@ struct WeChatUserInfo
 			name = (WeChatStr*)nameAddress;
 		}
 
-		if (Islegal() && name->pStr == NULL)
+		if ((Islegal() && name->pStr == NULL))
 		{
-			name->pStr = L"æœªèƒ½è·å–åˆ°æ˜µç§°";
+			name->pStr = L"Î´ÄÜ»ñÈ¡µ½ÓĞĞ§êÇ³Æ";
 		}
 	}
 
+
 	bool Islegal()
 	{
-		// åˆ¤æ–­callæ˜¯å¦å­˜åœ¨
+		// ÅĞ¶ÏcallÊÇ·ñ´æÔÚ
 		DWORD callAddr = (DWORD)current + 0x20;
 		DWORD callValue = *(DWORD*)callAddr;
 		return callValue == moduleBaseAddr + 0x1E8EFC8;
@@ -70,4 +71,3 @@ struct WeChatUserInfo
 	}
 
 };
-

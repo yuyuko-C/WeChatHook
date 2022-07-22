@@ -7,17 +7,17 @@
 
 bool SocketSever::StartUp()
 {
-	//åˆå§‹åŒ–WSA  
+	//³õÊ¼»¯WSA  
 	WORD sockVersion = MAKEWORD(2, 2);
 	WSADATA wsaData;
 
 	if (WSAStartup(sockVersion, &wsaData) != 0)
 	{
-		MessageBoxW(NULL, L"socketå¯åŠ¨å¤±è´¥,é‡å¯ç”µè„‘é‡è¯•", L"é”™è¯¯", 0);
+		MessageBoxW(NULL, L"socketÆô¶¯Ê§°Ü,ÖØÆôµçÄÔÖØÊÔ", L"´íÎó", 0);
 		return false;
 	}
 
-	//åˆ›å»ºå¥—æ¥å­—  
+	//´´½¨Ì×½Ó×Ö  
 	SOCKET slisten = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (slisten == INVALID_SOCKET)
 	{
@@ -25,7 +25,7 @@ bool SocketSever::StartUp()
 		return false;
 	}
 
-	//ç»‘å®šIPå’Œç«¯å£  
+	//°ó¶¨IPºÍ¶Ë¿Ú  
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(8888);
@@ -36,16 +36,16 @@ bool SocketSever::StartUp()
 		return false;
 	}
 
-	//å¼€å§‹ç›‘å¬  
+	//¿ªÊ¼¼àÌı  
 	if (listen(slisten, 5) == SOCKET_ERROR)
 	{
 		std::cout << "listen error !" << std::endl;
 		return false;
 	}
 
-	//åˆ¤æ–­æœ‰æ•ˆ
+	//ÅĞ¶ÏÓĞĞ§
 	isUseable = CheckValidDate();
-	//std::cout << "æœ‰æ•ˆåˆ¤æ–­:" << isUseable << std::endl;
+	//std::cout << "ÓĞĞ§ÅĞ¶Ï:" << isUseable << std::endl;
 
 	this->slisten = slisten;
 
@@ -54,15 +54,15 @@ bool SocketSever::StartUp()
 
 void SocketSever::SendTo(SOCKET sClient, WeChatMessage& msg)
 {
-	//å°†ç»“æ„ä½“è½¬ä¸ºå­—ç¬¦æ•°ç»„
+	//½«½á¹¹Ìå×ªÎª×Ö·ûÊı×é
 	char buffer[0x1024] = { 0 };
 	memcpy_s(buffer, 0x1024, &msg, sizeof(msg));
 
 	/*
-	send()ç”¨æ¥å°†æ•°æ®ç”±æŒ‡å®šçš„socketä¼ ç»™å¯¹æ–¹ä¸»æœº
+	send()ÓÃÀ´½«Êı¾İÓÉÖ¸¶¨µÄsocket´«¸ø¶Ô·½Ö÷»ú
 	int send(int s, const void * msg, int len, unsigned int flags)
-		sä¸ºå·²å»ºç«‹å¥½è¿æ¥çš„socketï¼ŒmsgæŒ‡å‘æ•°æ®å†…å®¹ï¼Œlenåˆ™ä¸ºæ•°æ®é•¿åº¦ï¼Œå‚æ•°flagsä¸€èˆ¬è®¾0
-		æˆåŠŸåˆ™è¿”å›å®é™…ä¼ é€å‡ºå»çš„å­—ç¬¦æ•°ï¼Œå¤±è´¥è¿”å›-1ï¼Œé”™è¯¯åŸå› å­˜äºerror
+		sÎªÒÑ½¨Á¢ºÃÁ¬½ÓµÄsocket£¬msgÖ¸ÏòÊı¾İÄÚÈİ£¬lenÔòÎªÊı¾İ³¤¶È£¬²ÎÊıflagsÒ»°ãÉè0
+		³É¹¦Ôò·µ»ØÊµ¼Ê´«ËÍ³öÈ¥µÄ×Ö·ûÊı£¬Ê§°Ü·µ»Ø-1£¬´íÎóÔ­Òò´æÓÚerror
 	*/
 	send(sClient, buffer, sizeof(buffer), 0);
 }
@@ -109,13 +109,13 @@ void SocketSever::Loop()
 {
 	bool exit = false;
 
-	//å¾ªç¯æ¥æ”¶æ•°æ®  
+	//Ñ­»·½ÓÊÕÊı¾İ  
 	SOCKET sClient;
 	sockaddr_in remoteAddr;
 	int nAddrlen = sizeof(remoteAddr);
 	while (true)
 	{
-		std::cout << "é˜»å¡ã€‚ã€‚ã€‚ã€‚ç­‰å¾…è¿æ¥ã€‚ã€‚ã€‚" << std::endl;
+		std::cout << "×èÈû...µÈ´ıÁ´½Ó" << std::endl;;
 		sClient = accept(slisten, (SOCKADDR*)&remoteAddr, &nAddrlen);
 		if (sClient == INVALID_SOCKET)
 		{
@@ -123,11 +123,11 @@ void SocketSever::Loop()
 			continue;
 		}
 
-		std::cout << "æ¥å—åˆ°ä¸€ä¸ªè¿æ¥ï¼š" << inet_ntoa(remoteAddr.sin_addr) << std::endl;
+		std::cout << "½ÓÊÜµ½Ò»¸öÁ¬½Ó£º" << inet_ntoa(remoteAddr.sin_addr) << std::endl;
 
 		if (isUseable)
 		{
-			//æ ¹æ®æ¥æ”¶çš„æ•°æ®æ‰§è¡Œä¸åŒçš„å‡½æ•°
+			//¸ù¾İ½ÓÊÕµÄÊı¾İÖ´ĞĞ²»Í¬µÄº¯Êı
 			WeChatMessage msg;
 			recv(sClient, (char*)&msg, sizeof(msg), 0);
 
@@ -152,15 +152,15 @@ void SocketSever::Loop()
 				exit = true;
 				break;
 			default:
-				MessageBox(NULL, L"æ„æ–™ä¹‹å¤–çš„æ¶ˆæ¯ç±»å‹", L"é”™è¯¯", 0);
+				//MessageBox(NULL, L"ÒâÁÏÖ®ÍâµÄÏûÏ¢ÀàĞÍ", L"´íÎó", 0);
 				break;
 			}
 		}
 
 
 
-		//å‘é€æ•°æ®  
-		const char* sendData = "ä½ å¥½ï¼ŒTCPå®¢æˆ·ç«¯ï¼\n";
+		//·¢ËÍÊı¾İ  
+		const char* sendData = "ÄãºÃ£¬TCP¿Í»§¶Ë£¡\n";
 		send(sClient, sendData, strlen(sendData), 0);
 		closesocket(sClient);
 

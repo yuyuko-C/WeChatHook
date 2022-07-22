@@ -13,33 +13,33 @@ class BigInteger
 public:
 	typedef long long long_t;
 	typedef unsigned base_t;
-	BigInteger() : is_negative(false) { data.push_back(0); }// é»˜è®¤ä¸º0
-	BigInteger(const BigInteger&);    // åˆ©ç”¨ç»™å®šçš„å¤§æ•´æ•°åˆå§‹åŒ–
-	BigInteger(const std::string&);// åˆ©ç”¨ç»™å®šçš„åå…­è¿›åˆ¶å­—ç¬¦ä¸²åˆå§‹åŒ–
-	BigInteger(const long_t&);        // åˆ©ç”¨ç»™å®šçš„long_tç±»å‹æ•°æ®åˆå§‹åŒ–
+	BigInteger() : is_negative(false) { data.push_back(0); }// Ä¬ÈÏÎª0
+	BigInteger(const BigInteger&);    // ÀûÓÃ¸ø¶¨µÄ´óÕûÊı³õÊ¼»¯
+	BigInteger(const std::string&);// ÀûÓÃ¸ø¶¨µÄÊ®Áù½øÖÆ×Ö·û´®³õÊ¼»¯
+	BigInteger(const long_t&);        // ÀûÓÃ¸ø¶¨µÄlong_tÀàĞÍÊı¾İ³õÊ¼»¯
 	~BigInteger() {}
 
-	BigInteger add(const BigInteger&);        // å¤§æ•´æ•°åŠ æ³•
-	BigInteger subtract(const BigInteger&);// å¤§æ•´æ•°å‡æ³•
-	BigInteger multiply(const BigInteger&) const;// å¤§æ•´æ•°ä¹˜æ³•
-	BigInteger divide(const BigInteger&);    // å¤§æ•´æ•°æ•´é™¤
-	BigInteger remainder(const BigInteger&);    // å¤§æ•´æ•°å–ä½™
-	BigInteger mod(const BigInteger&);        // å¤§æ•´æ•°å–æ¨¡
-	BigInteger divideAndRemainder(const BigInteger&, BigInteger&);// å¤§æ•´æ•°æ•´é™¤å’Œå–ä½™
-	BigInteger pow(const BigInteger&);        // å¤§æ•´æ•°å¹‚ä¹˜
-	BigInteger modPow(const BigInteger&, const BigInteger&) const;// å¤§æ•´æ•°å¹‚æ¨¡è¿ç®—
-	BigInteger modInverse(const BigInteger&);// ç”¨æ‰©å±•æ¬§å‡ é‡Œå¾—ç®—æ³•æ±‚ä¹˜æ³•é€†å…ƒ
+	BigInteger add(const BigInteger&);        // ´óÕûÊı¼Ó·¨
+	BigInteger subtract(const BigInteger&);// ´óÕûÊı¼õ·¨
+	BigInteger multiply(const BigInteger&) const;// ´óÕûÊı³Ë·¨
+	BigInteger divide(const BigInteger&);    // ´óÕûÊıÕû³ı
+	BigInteger remainder(const BigInteger&);    // ´óÕûÊıÈ¡Óà
+	BigInteger mod(const BigInteger&);        // ´óÕûÊıÈ¡Ä£
+	BigInteger divideAndRemainder(const BigInteger&, BigInteger&);// ´óÕûÊıÕû³ıºÍÈ¡Óà
+	BigInteger pow(const BigInteger&);        // ´óÕûÊıÃİ³Ë
+	BigInteger modPow(const BigInteger&, const BigInteger&) const;// ´óÕûÊıÃİÄ£ÔËËã
+	BigInteger modInverse(const BigInteger&);// ÓÃÀ©Õ¹Å·¼¸ÀïµÃËã·¨Çó³Ë·¨ÄæÔª
 
-	BigInteger shiftLeft(const unsigned);    // ç§»ä½è¿ç®—,å·¦ç§»
-	BigInteger shiftRight(const unsigned);    // ç§»ä½è¿ç®—,å³ç§»
+	BigInteger shiftLeft(const unsigned);    // ÒÆÎ»ÔËËã,×óÒÆ
+	BigInteger shiftRight(const unsigned);    // ÒÆÎ»ÔËËã,ÓÒÒÆ
 
-	int compareTo(const BigInteger&) const;// æ¯”è¾ƒè¿ç®—
-	bool equals(const BigInteger&) const;// åˆ¤æ–­æ˜¯å¦ç­‰äºç»™å®šæ•°
-	static BigInteger valueOf(const long_t&);// å°†ç»™å®šæ•°è½¬æ¢ä¸ºå¤§æ•´æ•°å¹¶è¿”å›
-	std::string toString() const;    // å°†å¤§æ•´æ•°è½¬æ¢ä¸ºåå…­è¿›åˆ¶å­—ç¬¦ä¸²
-	BigInteger abs() const;        // æ±‚å¤§æ•´æ•°çš„ç»å¯¹å€¼
+	int compareTo(const BigInteger&) const;// ±È½ÏÔËËã
+	bool equals(const BigInteger&) const;// ÅĞ¶ÏÊÇ·ñµÈÓÚ¸ø¶¨Êı
+	static BigInteger valueOf(const long_t&);// ½«¸ø¶¨Êı×ª»»Îª´óÕûÊı²¢·µ»Ø
+	std::string toString() const;    // ½«´óÕûÊı×ª»»ÎªÊ®Áù½øÖÆ×Ö·û´®
+	BigInteger abs() const;        // Çó´óÕûÊıµÄ¾ø¶ÔÖµ
 protected:
-	// ä»¥ä¸‹è¿ç®—ç¬¦é‡è½½å‡½æ•°ä¸»è¦ç”¨äºåƒåŸºæœ¬ç±»å‹ä¸€æ ·ä½¿ç”¨å¤§æ•´æ•°ç±»å‹
+	// ÒÔÏÂÔËËã·ûÖØÔØº¯ÊıÖ÷ÒªÓÃÓÚÏñ»ù±¾ÀàĞÍÒ»ÑùÊ¹ÓÃ´óÕûÊıÀàĞÍ
 	friend BigInteger operator + (const BigInteger&, const BigInteger&);
 	friend BigInteger operator - (const BigInteger&, const BigInteger&);
 	friend BigInteger operator * (const BigInteger&, const BigInteger&);
@@ -52,7 +52,7 @@ protected:
 	friend bool operator >= (const BigInteger&, const BigInteger&);
 	friend bool operator != (const BigInteger&, const BigInteger&);
 
-	// é‡è½½ç‰ˆæœ¬,ä½¿å…¶èƒ½ç”¨äºlong_tç±»å‹
+	// ÖØÔØ°æ±¾,Ê¹ÆäÄÜÓÃÓÚlong_tÀàĞÍ
 	friend BigInteger operator + (const BigInteger&, const long_t&);
 	friend BigInteger operator - (const BigInteger&, const long_t&);
 	friend BigInteger operator * (const BigInteger&, const long_t&);
@@ -69,33 +69,33 @@ protected:
 	BigInteger operator = (const std::string& str) { return (*this) = BigInteger(str); }
 	BigInteger operator = (const long_t& num) { return (*this) = BigInteger(num); }
 private:
-	BigInteger trim();    // å»æ‰é«˜ä½æ— ç”¨çš„0
-	int hexToNum(char);    // åå…­è¿›åˆ¶å­—ç¬¦è½¬æ¢ä¸ºåè¿›åˆ¶æ•°
+	BigInteger trim();    // È¥µô¸ßÎ»ÎŞÓÃµÄ0
+	int hexToNum(char);    // Ê®Áù½øÖÆ×Ö·û×ª»»ÎªÊ®½øÖÆÊı
 public:
-	static const int base_bit = 5;    // 2^5=32,å¤§æ•´æ•°æ¯ä½å­˜å‚¨çš„äºŒè¿›åˆ¶ä½æ•°
-	static const int base_char = 8;    // ç»„æˆå¤§æ•´æ•°çš„ä¸€ä½éœ€è¦çš„åå…­è¿›åˆ¶ä½æ•°
-	static const int base_int = 32;    // å¤§æ•´æ•°ä¸€ä½å¯¹åº”çš„äºŒè¿›åˆ¶ä½æ•°
-	static const int base_num = 0xffffffff;// æˆªå–ä½ä½çš„è¾…åŠ©
-	static const int base_temp = 0x1f;    // æˆªå–æ¨¡32çš„ä½™æ•°çš„è¾…åŠ©
-	static const BigInteger ZERO;    // å¤§æ•´æ•°å¸¸é‡0
-	static const BigInteger ONE;    // å¤§æ•´æ•°å¸¸é‡1
-	static const BigInteger TWO;    // å¤§æ•´æ•°å¸¸é‡2
-	static const BigInteger TEN;    // å¤§æ•´æ•°å¸¸é‡10
+	static const int base_bit = 5;    // 2^5=32,´óÕûÊıÃ¿Î»´æ´¢µÄ¶ş½øÖÆÎ»Êı
+	static const int base_char = 8;    // ×é³É´óÕûÊıµÄÒ»Î»ĞèÒªµÄÊ®Áù½øÖÆÎ»Êı
+	static const int base_int = 32;    // ´óÕûÊıÒ»Î»¶ÔÓ¦µÄ¶ş½øÖÆÎ»Êı
+	static const int base_num = 0xffffffff;// ½ØÈ¡µÍÎ»µÄ¸¨Öú
+	static const int base_temp = 0x1f;    // ½ØÈ¡Ä£32µÄÓàÊıµÄ¸¨Öú
+	static const BigInteger ZERO;    // ´óÕûÊı³£Á¿0
+	static const BigInteger ONE;    // ´óÕûÊı³£Á¿1
+	static const BigInteger TWO;    // ´óÕûÊı³£Á¿2
+	static const BigInteger TEN;    // ´óÕûÊı³£Á¿10
 private:
-	bool is_negative;// æ˜¯å¦ä¸ºè´Ÿæ•°
-	std::vector<base_t> data;// æŒ‰ä½æ•°æ®å­˜å‚¨,é«˜ä½åœ¨å
-	class bit {    // ä¾¿äºå¤§æ•´æ•°è¿ç®—çš„äºŒè¿›åˆ¶å¤„ç†ç±»
+	bool is_negative;// ÊÇ·ñÎª¸ºÊı
+	std::vector<base_t> data;// °´Î»Êı¾İ´æ´¢,¸ßÎ»ÔÚºó
+	class bit {    // ±ãÓÚ´óÕûÊıÔËËãµÄ¶ş½øÖÆ´¦ÀíÀà
 	public:
-		bit(const BigInteger&);// æ ¹æ®å¤§æ•´æ•°åˆå§‹åŒ–
+		bit(const BigInteger&);// ¸ù¾İ´óÕûÊı³õÊ¼»¯
 
-		size_t size() { return length; }    // è¿”å›å¤§æ•´æ•°å¯¹åº”çš„äºŒè¿›åˆ¶ä½æ•°
-		bool at(size_t);    // è¿”å›ç¬¬iä½äºŒè¿›åˆ¶æ˜¯å¦ä¸º1
+		size_t size() { return length; }    // ·µ»Ø´óÕûÊı¶ÔÓ¦µÄ¶ş½øÖÆÎ»Êı
+		bool at(size_t);    // ·µ»ØµÚiÎ»¶ş½øÖÆÊÇ·ñÎª1
 	private:
-		std::vector<base_t> bit_vector;    // äºŒè¿›åˆ¶æ•°æ®å­˜å‚¨,æ¯ä¸€ä¸ªå…ƒç´ å¯¹åº”32ä½äºŒè¿›åˆ¶
-		size_t length;    // äºŒè¿›åˆ¶çš„æ€»ä½æ•°
+		std::vector<base_t> bit_vector;    // ¶ş½øÖÆÊı¾İ´æ´¢,Ã¿Ò»¸öÔªËØ¶ÔÓ¦32Î»¶ş½øÖÆ
+		size_t length;    // ¶ş½øÖÆµÄ×ÜÎ»Êı
 
 	};
-	friend class RSA;    // RSAä¸ºå…¶å‹å…ƒç±»
+	friend class RSA;    // RSAÎªÆäÓÑÔªÀà
 };
 
 #endif // __BIGINTEGER_H__

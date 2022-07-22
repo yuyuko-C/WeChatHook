@@ -40,31 +40,31 @@ struct RSAPair
 class RSA {
 public:
 	RSA() {}
-	RSA(const unsigned len) { RSAPair pair; CreatePair(len, pair); SetPair(pair); }    // åˆ©ç”¨lenåˆå§‹åŒ–å¯¹è±¡
+	RSA(const unsigned len) { RSAPair pair; CreatePair(len, pair); SetPair(pair); }    // ÀûÓÃlen³õÊ¼»¯¶ÔÏó
 	~RSA() {}
 
-	void SetPair(RSAPair&); //è®¾ç½®å…¬é’¥ç§é’¥
-	void CreatePair(const unsigned, RSAPair&);//ç”Ÿæˆå…¬é’¥ç§é’¥
+	void SetPair(RSAPair&); //ÉèÖÃ¹«Ô¿Ë½Ô¿
+	void CreatePair(const unsigned, RSAPair&);//Éú³É¹«Ô¿Ë½Ô¿
 
-	BigInteger encryptByPublic(const BigInteger&);    // å…¬é’¥åŠ å¯†
-	BigInteger decryptByPrivate(const BigInteger&);// ç§é’¥è§£å¯†
+	BigInteger encryptByPublic(const BigInteger&);    // ¹«Ô¿¼ÓÃÜ
+	BigInteger decryptByPrivate(const BigInteger&);// Ë½Ô¿½âÃÜ
 
-	// ä»¥ä¸‹ä¸»è¦ç”¨äºæ•°å­—ç­¾å
-	BigInteger encryptByPrivate(const BigInteger&);// ç§é’¥åŠ å¯†
-	BigInteger decryptByPublic(const BigInteger&);    // å…¬é’¥è§£å¯†
+	// ÒÔÏÂÖ÷ÒªÓÃÓÚÊı×ÖÇ©Ãû
+	BigInteger encryptByPrivate(const BigInteger&);// Ë½Ô¿¼ÓÃÜ
+	BigInteger decryptByPublic(const BigInteger&);    // ¹«Ô¿½âÃÜ
 protected:
-	friend std::ostream& operator << (std::ostream&, const RSA&);// è¾“å‡ºç›¸å…³æ•°æ®
+	friend std::ostream& operator << (std::ostream&, const RSA&);// Êä³öÏà¹ØÊı¾İ
 private:
-	BigInteger createOddNum(unsigned);// ç”Ÿæˆä¸€ä¸ªå¤§å¥‡æ•°,å‚æ•°ä¸ºå…¶é•¿åº¦
-	bool isPrime(const BigInteger&, const unsigned);// åˆ¤æ–­æ˜¯å¦ä¸ºç´ æ•°
-	BigInteger createRandomSmaller(const BigInteger&);// éšæœºåˆ›å»ºä¸€ä¸ªæ›´å°çš„æ•°
-	BigInteger createPrime(unsigned, const unsigned);// ç”Ÿæˆä¸€ä¸ªå¤§ç´ æ•°,å‚æ•°ä¸ºå…¶é•¿åº¦
+	BigInteger createOddNum(unsigned);// Éú³ÉÒ»¸ö´óÆæÊı,²ÎÊıÎªÆä³¤¶È
+	bool isPrime(const BigInteger&, const unsigned);// ÅĞ¶ÏÊÇ·ñÎªËØÊı
+	BigInteger createRandomSmaller(const BigInteger&);// Ëæ»ú´´½¨Ò»¸ö¸üĞ¡µÄÊı
+	BigInteger createPrime(unsigned, const unsigned);// Éú³ÉÒ»¸ö´óËØÊı,²ÎÊıÎªÆä³¤¶È
 public:
-	BigInteger n, e;// å…¬é’¥
+	BigInteger n, e;// ¹«Ô¿
 private:
-	BigInteger d;// ç§é’¥
-	BigInteger p, q;// å¤§ç´ æ•°på’Œq
-	BigInteger eul;// nçš„æ¬§æ‹‰å‡½æ•°
+	BigInteger d;// Ë½Ô¿
+	BigInteger p, q;// ´óËØÊıpºÍq
+	BigInteger eul;// nµÄÅ·À­º¯Êı
 };
 
 #endif // __RSA_H__

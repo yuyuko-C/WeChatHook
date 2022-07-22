@@ -16,14 +16,14 @@
 
 void SendTextMessage(std::wstring wxid, std::wstring message)
 {
-	// 发送消息的call
+	// ?????????call
 	DWORD sendCall = moduleBaseAddr + 0x54BB1D30 - 0x54690000;
 
-	// 组装格式
+	// ??????
 	WeChatStr id = { wxid.c_str(), (int)wxid.length(),(int)wxid.length() };
 	WeChatStr msg = { message.c_str(),(int)message.length(),(int)message.length() };
 
-	// 缓冲区
+	// ??????
 	WCHAR at[0x38] = { 0 };
 	WCHAR buff[0x3B0] = { 0 };
 
@@ -165,7 +165,7 @@ void OutputAddressBook(std::wstring fullPath)
 	file.open(fullPath, std::ios::out);
 	if (!file.is_open())
 	{
-		MessageBox(NULL, L"通讯录失败,使用管理员身份运行微信后重试", L"错误", 0);
+		MessageBox(NULL, L"??????,??��???????????????????", L"????", 0);
 	}
 
 	file.imbue(std::locale("", std::locale::all));
@@ -173,7 +173,7 @@ void OutputAddressBook(std::wstring fullPath)
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> codev8;
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> codev816;
 
-	file << codev816.to_bytes(L"wxid,微信昵称").c_str() << std::endl;
+	file << codev816.to_bytes(L"wxid,??????").c_str() << std::endl;
 
 	WeChatUserInfo info = { head };
 	do

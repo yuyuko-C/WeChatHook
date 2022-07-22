@@ -19,61 +19,61 @@ void RSA::SetPair(RSAPair& rsa)
 }
 
 /// <summary>
-/// ç”ŸæˆRSAçš„å…¬é’¥ç§é’¥å¯¹
+/// Éú³ÉRSAµÄ¹«Ô¿Ë½Ô¿¶Ô
 /// </summary>
-/// <param name="len">è¡¨ç¤ºå¤§ç´ æ•°çš„äºŒè¿›åˆ¶ä½æ•°</param>
-/// <param name="rsa">å¼•ç”¨ç»“æ„ä½“,ç”¨äºä¼ å‚</param>
+/// <param name="len">±íÊ¾´óËØÊıµÄ¶ş½øÖÆÎ»Êı</param>
+/// <param name="rsa">ÒıÓÃ½á¹¹Ìå,ÓÃÓÚ´«²Î</param>
 void RSA::CreatePair(const unsigned len, RSAPair& rsa)
 {
-	//æ›´æ–°éšæœºç§å­
+	//¸üĞÂËæ»úÖÖ×Ó
 	srand((unsigned)time(NULL));
-	// äº§ç”Ÿå¤§ç´ æ•°på’Œq
-	BigInteger p = createPrime(len, 15);// å‡ºé”™æ¦‚ç‡ä¸º(1/4)^15
+	// ²úÉú´óËØÊıpºÍq
+	BigInteger p = createPrime(len, 15);// ³ö´í¸ÅÂÊÎª(1/4)^15
 	BigInteger q = createPrime(len, 15);
-	// è®¡ç®—å‡ºnçš„æ¬§æ‹‰å‡½æ•°
+	// ¼ÆËã³önµÄÅ·À­º¯Êı
 	BigInteger eul = (p - 1) * (q - 1);
-	// è®¡ç®—å‡ºn
+	// ¼ÆËã³ön
 	rsa.n = p * q;
-	// æ ¹æ®æä¾›çš„æ¬§æ‹‰æ•°ç”Ÿæˆå…¬é’¥ã€ç§é’¥æŒ‡æ•°
+	// ¸ù¾İÌá¹©µÄÅ·À­ÊıÉú³É¹«Ô¿¡¢Ë½Ô¿Ö¸Êı
 	rsa.e = 65537;
 	rsa.d = rsa.e.modInverse(eul);
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:ä½¿ç”¨å…¬é’¥è¿›è¡ŒåŠ å¯†
- * å‚æ•°å«ä¹‰:mè¡¨ç¤ºè¦åŠ å¯†çš„æ˜æ–‡
+ * º¯Êı¹¦ÄÜ:Ê¹ÓÃ¹«Ô¿½øĞĞ¼ÓÃÜ
+ * ²ÎÊıº¬Òå:m±íÊ¾Òª¼ÓÃÜµÄÃ÷ÎÄ
  */
 BigInteger RSA::encryptByPublic(const BigInteger& m) {
 	return m.modPow(e, n);
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:ä½¿ç”¨ç§é’¥è¿›è¡Œè§£å¯†
- * å‚æ•°å«ä¹‰:cè¡¨ç¤ºè¦è§£å¯†çš„å¯†æ–‡
+ * º¯Êı¹¦ÄÜ:Ê¹ÓÃË½Ô¿½øĞĞ½âÃÜ
+ * ²ÎÊıº¬Òå:c±íÊ¾Òª½âÃÜµÄÃÜÎÄ
  */
 BigInteger RSA::decryptByPrivate(const BigInteger& c) {
 	return c.modPow(d, n);
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:ä½¿ç”¨ç§é’¥è¿›è¡ŒåŠ å¯†
- * å‚æ•°å«ä¹‰:mè¡¨ç¤ºè¦åŠ å¯†çš„æ˜æ–‡
+ * º¯Êı¹¦ÄÜ:Ê¹ÓÃË½Ô¿½øĞĞ¼ÓÃÜ
+ * ²ÎÊıº¬Òå:m±íÊ¾Òª¼ÓÃÜµÄÃ÷ÎÄ
  */
 BigInteger RSA::encryptByPrivate(const BigInteger& m) {
 	return decryptByPrivate(m);
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:ä½¿ç”¨å…¬é’¥è¿›è¡Œè§£å¯†
- * å‚æ•°å«ä¹‰:cè¡¨ç¤ºè¦è§£å¯†çš„å¯†æ–‡
+ * º¯Êı¹¦ÄÜ:Ê¹ÓÃ¹«Ô¿½øĞĞ½âÃÜ
+ * ²ÎÊıº¬Òå:c±íÊ¾Òª½âÃÜµÄÃÜÎÄ
  */
 BigInteger RSA::decryptByPublic(const BigInteger& c) {
 	return encryptByPublic(c);
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:è¾“å‡ºRSAç›¸å…³æ•°æ®
- * å‚æ•°å«ä¹‰:outè¡¨ç¤ºè¾“å‡ºæµ,rsaè¡¨ç¤ºè¦è¾“å‡ºçš„RSAå¯¹è±¡
+ * º¯Êı¹¦ÄÜ:Êä³öRSAÏà¹ØÊı¾İ
+ * ²ÎÊıº¬Òå:out±íÊ¾Êä³öÁ÷,rsa±íÊ¾ÒªÊä³öµÄRSA¶ÔÏó
  */
 std::ostream& operator << (std::ostream& out, const RSA& rsa) {
 	out << "n: " << rsa.n << "\n";
@@ -85,94 +85,94 @@ std::ostream& operator << (std::ostream& out, const RSA& rsa) {
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:ç”Ÿæˆä¸€ä¸ªé•¿åº¦ä¸ºlençš„å¥‡æ•°
- * å‚æ•°å«ä¹‰:lenä»£è¡¨å¥‡æ•°çš„äºŒè¿›åˆ¶é•¿åº¦
+ * º¯Êı¹¦ÄÜ:Éú³ÉÒ»¸ö³¤¶ÈÎªlenµÄÆæÊı
+ * ²ÎÊıº¬Òå:len´ú±íÆæÊıµÄ¶ş½øÖÆ³¤¶È
  */
 BigInteger RSA::createOddNum(unsigned len) {
 	static const char hex_table[] = { '0', '1', '2', '3', '4', '5', '6', '7',
 									'8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-	len >>= 2;    // åå…­è¿›åˆ¶æ•°æ®,æ¯ä½å 4ä½äºŒè¿›åˆ¶
+	len >>= 2;    // Ê®Áù½øÖÆÊı¾İ,Ã¿Î»Õ¼4Î»¶ş½øÖÆ
 	if (len) {
 		std::ostringstream oss;
 		for (size_t i = 0; i < len - 1; ++i)
 			oss << hex_table[rand() % 16];
-		oss << hex_table[1];// æœ€åä¸€ä½ä¸ºå¥‡æ•°
+		oss << hex_table[1];// ×îºóÒ»Î»ÎªÆæÊı
 		return BigInteger(oss.str());
 	}
 	return BigInteger("F");
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:åˆ¤æ–­ä¸€ä¸ªæ•°æ˜¯å¦ä¸ºç´ æ•°,é‡‡ç”¨ç±³å‹’æ‹‰å®¾å¤§ç´ æ•°æ£€æµ‹ç®—æ³•,å¤±è¯¯ç‡ä¸º(1/4)^k
- * å‚æ•°å«ä¹‰:numä»£è¡¨è¦åˆ¤å®šçš„æ•°,kä»£è¡¨æµ‹è¯•æ¬¡æ•°
+ * º¯Êı¹¦ÄÜ:ÅĞ¶ÏÒ»¸öÊıÊÇ·ñÎªËØÊı,²ÉÓÃÃ×ÀÕÀ­±ö´óËØÊı¼ì²âËã·¨,Ê§ÎóÂÊÎª(1/4)^k
+ * ²ÎÊıº¬Òå:num´ú±íÒªÅĞ¶¨µÄÊı,k´ú±í²âÊÔ´ÎÊı
  */
 bool RSA::isPrime(const BigInteger& num, const unsigned k) {
-	assert(num != BigInteger::ZERO);// æµ‹è¯•numæ˜¯å¦ä¸º0
+	assert(num != BigInteger::ZERO);// ²âÊÔnumÊÇ·ñÎª0
 	if (num == BigInteger::ONE)
-		return false;    // 1ä¸æ˜¯ç´ æ•°
+		return false;    // 1²»ÊÇËØÊı
 	if (num == BigInteger::TWO)
-		return true;    // 2æ˜¯ç´ æ•°
+		return true;    // 2ÊÇËØÊı
 
 	BigInteger t = num - 1;
-	BigInteger::bit b(t);// äºŒè¿›åˆ¶æ•°
-	if (b.at(0) == 1)    // å‡ä¸€ä¹‹åä¸ºå¥‡æ•°,åŸæ•°ä¸ºå¶æ•°
+	BigInteger::bit b(t);// ¶ş½øÖÆÊı
+	if (b.at(0) == 1)    // ¼õÒ»Ö®ºóÎªÆæÊı,Ô­ÊıÎªÅ¼Êı
 		return false;
 	// num-1 = 2^s*d
-	size_t s = 0;    // ç»Ÿè®¡äºŒè¿›åˆ¶æœ«å°¾æœ‰å‡ ä¸ª0
+	size_t s = 0;    // Í³¼Æ¶ş½øÖÆÄ©Î²ÓĞ¼¸¸ö0
 	BigInteger d(t);
 	for (size_t i = 0; i < b.size(); ++i) {
 		if (!b.at(i)) {
 			++s;
-			d = d.shiftRight(1);// è®¡ç®—å‡ºd
+			d = d.shiftRight(1);// ¼ÆËã³öd
 		}
 		else
 			break;
 	}
 
-	for (size_t i = 0; i < k; ++i) {// æµ‹è¯•kæ¬¡
-		BigInteger a = createRandomSmaller(num);// ç”Ÿæˆä¸€ä¸ªä»‹äº[1,num-1]ä¹‹é—´çš„éšæœºæ•°a
+	for (size_t i = 0; i < k; ++i) {// ²âÊÔk´Î
+		BigInteger a = createRandomSmaller(num);// Éú³ÉÒ»¸ö½éÓÚ[1,num-1]Ö®¼äµÄËæ»úÊıa
 		BigInteger x = a.modPow(d, num);
-		if (x == BigInteger::ONE)// å¯èƒ½ä¸ºç´ æ•°
+		if (x == BigInteger::ONE)// ¿ÉÄÜÎªËØÊı
 			continue;
 		bool ok = true;
-		// æµ‹è¯•æ‰€æœ‰0<=j<s,a^(2^j*d) mod num != -1
+		// ²âÊÔËùÓĞ0<=j<s,a^(2^j*d) mod num != -1
 		for (size_t j = 0; j < s && ok; ++j) {
 			if (x == t)
-				ok = false;    // æœ‰ä¸€ä¸ªç›¸ç­‰,å¯èƒ½ä¸ºç´ æ•°
+				ok = false;    // ÓĞÒ»¸öÏàµÈ,¿ÉÄÜÎªËØÊı
 			x = x.multiply(x).mod(num);
 		}
-		if (ok)    // ç¡®å®éƒ½ä¸ç­‰,ä¸€å®šä¸ºåˆæ•°
+		if (ok)    // È·Êµ¶¼²»µÈ,Ò»¶¨ÎªºÏÊı
 			return false;
 	}
-	return true;    // é€šè¿‡æ‰€æœ‰æµ‹è¯•,å¯èƒ½ä¸ºç´ æ•°
+	return true;    // Í¨¹ıËùÓĞ²âÊÔ,¿ÉÄÜÎªËØÊı
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:éšæœºç”Ÿæˆä¸€ä¸ªæ¯”valå°çš„æ•°
- * å‚æ•°å«ä¹‰:valä»£è¡¨æ¯”è¾ƒçš„é‚£ä¸ªæ•°
+ * º¯Êı¹¦ÄÜ:Ëæ»úÉú³ÉÒ»¸ö±ÈvalĞ¡µÄÊı
+ * ²ÎÊıº¬Òå:val´ú±í±È½ÏµÄÄÇ¸öÊı
  */
 BigInteger RSA::createRandomSmaller(const BigInteger& val) {
 	BigInteger::base_t t = 0;
 	do {
 		t = rand();
-	} while (t == 0);// éšæœºç”Ÿæˆé0æ•°
+	} while (t == 0);// Ëæ»úÉú³É·Ç0Êı
 
 	BigInteger mod(t);
-	BigInteger ans = mod % val;    // æ¯”valè¦å°
-	if (ans == BigInteger::ZERO)// å¿…é¡»éé›¶
+	BigInteger ans = mod % val;    // ±ÈvalÒªĞ¡
+	if (ans == BigInteger::ZERO)// ±ØĞë·ÇÁã
 		ans = val - BigInteger::ONE;
 	return ans;
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:ç”Ÿæˆä¸€ä¸ªäºŒè¿›åˆ¶é•¿åº¦ä¸ºlençš„å¤§ç´ æ•°
- * å‚æ•°å«ä¹‰:lenä»£è¡¨å¤§ç´ æ•°çš„é•¿åº¦,kä»£è¡¨ç´ æ•°æ£€æµ‹çš„æ¬¡æ•°
+ * º¯Êı¹¦ÄÜ:Éú³ÉÒ»¸ö¶ş½øÖÆ³¤¶ÈÎªlenµÄ´óËØÊı
+ * ²ÎÊıº¬Òå:len´ú±í´óËØÊıµÄ³¤¶È,k´ú±íËØÊı¼ì²âµÄ´ÎÊı
  */
 BigInteger RSA::createPrime(unsigned len, const unsigned k) {
 	assert(k > 0);
-	BigInteger ans = createOddNum(len);// å…ˆç”Ÿæˆä¸€ä¸ªå¥‡æ•°
-	while (!isPrime(ans, k)) {// ç´ æ€§æ£€æµ‹
-		ans = ans.add(BigInteger::TWO);// ä¸‹ä¸€ä¸ªå¥‡æ•°
+	BigInteger ans = createOddNum(len);// ÏÈÉú³ÉÒ»¸öÆæÊı
+	while (!isPrime(ans, k)) {// ËØĞÔ¼ì²â
+		ans = ans.add(BigInteger::TWO);// ÏÂÒ»¸öÆæÊı
 	}
 	return ans;
 }

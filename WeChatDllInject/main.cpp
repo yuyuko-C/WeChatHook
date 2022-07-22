@@ -14,9 +14,9 @@
 
 INT_PTR InjectDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4);
 INT_PTR SocketDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4);
-RSA GetRSAInstance();// åˆå§‹åŒ–rsa
-std::string GetBoardId();// è·å–ç”µè„‘ä¸»æ¿IDçš„åå…­è¿›åˆ¶å†™æ³•
-std::string GetCheckFileInfo(std::wstring& filePath);// è·å–éªŒè¯æ–‡ä»¶å­—ç¬¦ä¸²
+RSA GetRSAInstance();// ³õÊ¼»¯rsa
+std::string GetBoardId();// »ñÈ¡µçÄÔÖ÷°åIDµÄÊ®Áù½øÖÆĞ´·¨
+std::string GetCheckFileInfo(std::wstring& filePath);// »ñÈ¡ÑéÖ¤ÎÄ¼ş×Ö·û´®
 
 
 std::wstring exeFolder;
@@ -31,14 +31,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 #ifndef NDEBUG
 	Tools::OpenConsole();
-	std::cout << "è¾“å…¥å”¯ä¸€ID:";
+	std::cout << "ÊäÈëÎ¨Ò»ID:";
 	std::string in;
 	std::cin >> in;
 	std::cout << rsa.encryptByPublic(in) << std::endl;
 	system("pause");
 #else
 	//Tools::OpenConsole();
-	//æ‰§è¡Œèº«ä»½éªŒè¯
+	//Ö´ĞĞÉí·İÑéÖ¤
 	std::wstring path = L"./6EB4A12509EC32BCF03D3C359315B282.db";
 	std::string hexboard = GetBoardId();
 	std::string content = GetCheckFileInfo(path);
@@ -48,7 +48,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 	else
 	{
-		//éªŒè¯é€šè¿‡
+		//ÑéÖ¤Í¨¹ı
 		if (rsa.decryptByPrivate(content) == hexboard)
 		{
 			DialogBox(NULL, MAKEINTRESOURCE(IDD_DIALOG1), NULL, (DLGPROC)InjectDlgproc);
@@ -86,7 +86,7 @@ INT_PTR InjectDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4
 		processId = Tools::GetProcessIdbyName(PROCESSNAME);
 		if (processId == NULL)
 		{
-			MessageBox(NULL, L"å¾®ä¿¡å·²é€€å‡º,è¯·é‡å¯å¾®ä¿¡åé‡è¯•", L"é”™è¯¯", 0);
+			MessageBox(NULL, L"Î¢ĞÅÒÑÍË³ö,ÇëÖØÆôÎ¢ĞÅºóÖØÊÔ", L"´íÎó", 0);
 			return 0;
 		}
 		else
@@ -94,7 +94,7 @@ INT_PTR InjectDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4
 			hProcess = Tools::GetProcessHandle(processId);
 			if (hProcess == NULL)
 			{
-				MessageBox(NULL, L"æ‰“å¼€è¿›ç¨‹å¤±è´¥,é‡å¯å¾®ä¿¡åé‡è¯•", L"é”™è¯¯", 0);
+				MessageBox(NULL, L"´ò¿ª½ø³ÌÊ§°Ü,ÖØĞÂÎ¢ĞÅºóÖØÊÔ", L"´íÎó", 0);
 				return 0;
 			}
 		}
@@ -104,7 +104,7 @@ INT_PTR InjectDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4
 		{
 			if (dllAddress != NULL)
 			{
-				MessageBox(NULL, L"Dllå·²ç»æ³¨å…¥,æ— éœ€é‡å¤æ³¨å…¥", L"é”™è¯¯", 0);
+				MessageBox(NULL, L"DllÒÑ¾­×¢Èë,ÎŞĞèÖØ¸´×¢Èë", L"´íÎó", 0);
 			}
 			else
 			{
@@ -114,25 +114,25 @@ INT_PTR InjectDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4
 					if (!Tools::isFileExists_fopen(fullPath))
 					{
 						WCHAR buff[1024] = { 0 };
-						wsprintfW(buff, L"%sä¸å­˜åœ¨", fullPath.c_str());
-						MessageBox(NULL, buff, L"é”™è¯¯", 0);
+						wsprintfW(buff, L"%s²»´æÔÚ", fullPath.c_str());
+						M
 					}
 					else
 					{
 						DWORD addr = Tools::InjectDll(hProcess, fullPath);
 						if (addr == NULL)
 						{
-							MessageBox(NULL, L"Dllæ³¨å…¥å¤±è´¥,é‡å¯å¾®ä¿¡åé‡è¯•", L"é”™è¯¯", 0);
+							MessageBox(NULL, L"Dll×¢ÈëÊ§°Ü,ÖØÆôÎ¢ĞÅºóÖØÊÔ", L"´íÎó", 0);
 						}
 						else
 						{
-							MessageBox(NULL, L"Dllæ³¨å…¥å®Œæˆ", L"æˆåŠŸ", 0);
+							MessageBox(NULL, L"Dll×¢ÈëÍê³É", L"³É¹¦", 0);
 						}
 					}
 				}
 				else
 				{
-					MessageBox(NULL, L"ç»å¯¹è·¯å¾„è½¬æ¢å¤±è´¥", L"é”™è¯¯", 0);
+					MessageBox(NULL, L"¾ø¶ÔÂ·¾¶×ª»»Ê§°Ü", L"´íÎó", 0);
 				}
 			}
 		}
@@ -144,18 +144,18 @@ INT_PTR InjectDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4
 				if (Tools::FreeDll(hProcess, dllAddress))
 				{
 					dllAddress = NULL;
-					MessageBox(NULL, L"Dllå¸è½½å®Œæˆ", L"æˆåŠŸ", 0);
+					MessageBox(NULL, L"DllĞ¶ÔØÍê³É", L"³É¹¦", 0);
 				}
 			}
 			else
 			{
-				MessageBox(NULL, L"Dllåœ¨è¿›ç¨‹ä¸­ä¸å­˜åœ¨,æ— éœ€é‡å†æ¬¡å¸è½½", L"é”™è¯¯", 0);
+				MessageBox(NULL, L"DllÔÚ½ø³ÌÖĞ²»´æÔÚ,ÎŞĞèÖØÔÙ´ÎĞ¶ÔØ", L"´íÎó", 0);
 			}
 		}
 		else if (button == BTN_OPENCONSOLE)
 		{
-			// æ‰“å¼€socketé€šä¿¡ç•Œé¢
-			consoleHandle = Tools::FindDialog(L"ä»…é™ç”¨äºå‘é€å…¬å‘Šä¸é€šçŸ¥,ä¸å¾—ç”¨äºè¿æ³•ç”¨é€”");
+			// ´ò¿ªsocketÍ¨ĞÅ½çÃæ
+			consoleHandle = Tools::FindDialog(L"½öÏŞÓÃÓÚ·¢ËÍ¹«¸æÓëÍ¨Öª,²»µÃÓÃÓÚÎ¥·¨ÓÃÍ¾");
 
 			if (consoleHandle == NULL)
 			{
@@ -190,7 +190,7 @@ INT_PTR SocketDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4
 		processId = Tools::GetProcessIdbyName(PROCESSNAME);
 		if (processId == NULL)
 		{
-			MessageBox(NULL, L"å¾®ä¿¡å·²é€€å‡º,è¯·é‡å¯å¾®ä¿¡åé‡è¯•", L"é”™è¯¯", 0);
+			MessageBox(NULL, L"Î¢ĞÅÒÑÍË³ö,ÇëÖØÆôÎ¢ĞÅºóÖØÊÔ", L"´íÎó", 0);
 			return 0;
 		}
 		else
@@ -198,7 +198,7 @@ INT_PTR SocketDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4
 			hProcess = Tools::GetProcessHandle(processId);
 			if (hProcess == NULL)
 			{
-				MessageBox(NULL, L"æ‰“å¼€è¿›ç¨‹å¤±è´¥,é‡å¯å¾®ä¿¡åé‡è¯•", L"é”™è¯¯", 0);
+				MessageBox(NULL, L"´ò¿ª½ø³ÌÊ§°Ü,ÖØÆôÎ¢ĞÅºóÖØÊÔ", L"´íÎó", 0);
 				return 0;
 			}
 		}
@@ -217,17 +217,17 @@ INT_PTR SocketDlgproc(HWND handle, UINT msg, WPARAM button, LPARAM unnamedParam4
 		case BTN_ADDRESS:
 			if (dllAddress == NULL)
 			{
-				MessageBox(NULL, L"dllå·²å¸è½½,æ— æ³•å®Œæˆæ“ä½œ", L"é”™è¯¯", 0);
+				MessageBox(NULL, L"dllÒÑĞ¶ÔØ,ÎŞ·¨Íê³É²Ù×÷", L"´íÎó", 0);
 			}
 			else
 			{
-				client.OutputAddressBook(exeFolder + L"å¾®ä¿¡é€šè®¯å½•.txt");
+				client.OutputAddressBook(exeFolder + L"Î¢ĞÅÍ¨Ñ¶Â¼.txt");
 			}
 			break;
 		case BTN_SEND:
 			if (dllAddress == NULL)
 			{
-				MessageBox(NULL, L"dllå·²å¸è½½,æ— æ³•å®Œæˆæ“ä½œ", L"é”™è¯¯", 0);
+				MessageBox(NULL, L"dllÒÑĞ¶ÔØ,ÎŞ·¨Íê³É²Ù×÷", L"´íÎó", 0);
 			}
 			else
 			{
@@ -266,7 +266,7 @@ std::string GetCheckFileInfo(std::wstring& filePath)
 
 	if (Tools::isFileExists_fopen(filePath))
 	{
-		//æ‰“å¼€æ–‡ä»¶è·å–éªŒè¯ç 
+		//´ò¿ªÎÄ¼ş»ñÈ¡ÑéÖ¤Âë
 		std::ifstream file;
 		file.open(filePath);
 		stream << file.rdbuf();

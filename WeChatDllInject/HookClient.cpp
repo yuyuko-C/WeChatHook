@@ -35,7 +35,7 @@ void HookClient::SendAllTypeMessage(HWND handle)
 
 void HookClient::SetWxidList(HWND handle)
 {
-	SetEditText(handle, PATH_WXID, Tools::BrowserFileWindow(L"æ–‡æœ¬æ–‡æ¡£(*.txt)\0*.txt\0"));
+	SetEditText(handle, PATH_WXID, Tools::BrowserFileWindow(L"ÎÄ±¾ÎÄµµ(*.txt)\0*.txt\0"));
 	wxidFile.open(GetEditText(handle, PATH_WXID));
 	wxidStream << wxidFile.rdbuf();
 	wxidString = wxidStream.str();
@@ -47,13 +47,13 @@ void HookClient::SetWxidList(HWND handle)
 
 void HookClient::SetImagePath(HWND handle)
 {
-	SetEditText(handle, PATH_IMAGE, Tools::BrowserFileWindow(L"å›¾ç‰‡æ–‡ä»¶(*.jpg;*.jpeg;*.png;*.bmp;)\0*.jpg;*.jpeg;*.png;*.bmp;\0"));
+	SetEditText(handle, PATH_IMAGE, Tools::BrowserFileWindow(L"Í¼Æ¬ÎÄ¼þ(*.jpg;*.jpeg;*.png;*.bmp;)\0*.jpg;*.jpeg;*.png;*.bmp;\0"));
 	image = GetEditText(handle, PATH_IMAGE);
 }
 
 void HookClient::SetFilePath(HWND handle)
 {
-	SetEditText(handle, PATH_FILE, Tools::BrowserFileWindow(L"æ‰€æœ‰æ–‡ä»¶(*.*)\0*.*\0"));
+	SetEditText(handle, PATH_FILE, Tools::BrowserFileWindow(L"ËùÓÐÎÄ¼þ(*.*)\0*.*\0"));
 	file = GetEditText(handle, PATH_FILE);
 }
 
@@ -136,7 +136,7 @@ bool HookClient::IsServerOpend()
 	HANDLE hProcess = Tools::GetProcessHandle(processId);
 	if (hProcess == NULL)
 	{
-		MessageBox(NULL, L"æ‰“å¼€è¿›ç¨‹å¤±è´¥", L"é”™è¯¯", 0);
+		MessageBox(NULL, L"´ò¿ª½ø³ÌÊ§°Ü", L"´íÎó", 0);
 		return false;
 	}
 	DWORD address = Tools::InjectedDllAddress(hProcess, L"WeChatDll.dll");

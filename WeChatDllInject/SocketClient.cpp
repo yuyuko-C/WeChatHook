@@ -5,12 +5,12 @@
 
 bool SocketClient::StartUp()
 {		
-	// 鍚姩寮傛socket閫氫俊
+	// 启动异步socket通信
 	WORD sockVersion = MAKEWORD(2, 2);
 	WSADATA data;
 	if (WSAStartup(sockVersion, &data) != 0)
 	{
-		MessageBoxW(NULL, L"socket鍚姩澶辫触,閲嶅惎鐢佃剳閲嶈瘯", L"閿欒", 0);
+		MessageBoxW(NULL, L"socket启动失败,重启电脑重试", L"错误", 0);
 		return false;
 	}
 	return true;
@@ -31,7 +31,7 @@ void SocketClient::SendSoketMessage(WeChatMessage& msg)
 	serAddr.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
 	if (connect(sClient, (sockaddr*)&serAddr, sizeof(serAddr)) == SOCKET_ERROR)
 	{
-		//杩炴帴澶辫触 
+		//连接失败 
 		std::cout << "connect error !" << std::endl;
 		closesocket(sClient);
 		return;
@@ -48,15 +48,15 @@ void SocketClient::SendSoketMessage(WeChatMessage& msg)
 
 void SocketClient::SendTo(SOCKET sClient, WeChatMessage& msg)
 {
-	//灏嗙粨鏋勪綋杞负瀛楃鏁扮粍
+	//将结构体转为字符数组
 	char buffer[0x1024] = { 0 };
 	memcpy_s(buffer, 0x1024, &msg, sizeof(msg));
 
 	/*
-	send()鐢ㄦ潵灏嗘暟鎹敱鎸囧畾鐨剆ocket浼犵粰瀵规柟涓绘満
+	send()用来将数据由指定的socket传给对方主机
 	int send(int s, const void * msg, int len, unsigned int flags)
-		s涓哄凡寤虹珛濂借繛鎺ョ殑socket锛宮sg鎸囧悜鏁版嵁鍐呭锛宭en鍒欎负鏁版嵁闀垮害锛屽弬鏁癴lags涓�鑸0
-		鎴愬姛鍒欒繑鍥炲疄闄呬紶閫佸嚭鍘荤殑瀛楃鏁帮紝澶辫触杩斿洖-1锛岄敊璇師鍥犲瓨浜巈rror
+		s为已建立好连接的socket，msg指向数据内容，len则为数据长度，参数flags一般设0
+		成功则返回实际传送出去的字符数，失败返回-1，错误原因存于error
 	*/
 	send(sClient, buffer, sizeof(buffer), 0);
 
@@ -65,7 +65,7 @@ void SocketClient::SendTo(SOCKET sClient, WeChatMessage& msg)
 
 void SocketClient::RecvFrom(SOCKET sClient, char* buffer)
 {
-	//鎺ユ敹鏁版嵁  
+	//接收数据  
 	int ret = recv(sClient, buffer, 0x1024, 0);
 	if (ret > 0)
 	{

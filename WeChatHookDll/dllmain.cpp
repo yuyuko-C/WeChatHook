@@ -1,4 +1,4 @@
-ï»¿// dllmain.cpp : å®šä¹‰ DLL åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
+// dllmain.cpp : ¶¨Òå DLL Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
 #include "pch.h"
 
 #include "SocketSever.h"
@@ -25,16 +25,16 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	LPVOID lpReserved
 )
 {
-	// æ¯ä¸ªæ¶ˆæ¯å¾ªç¯éƒ½ä¼šæ‰§è¡Œçš„åŒºåŸŸ
+	// Ã¿¸öÏûÏ¢Ñ­»·¶¼»áÖ´ĞĞµÄÇøÓò
 
-	// åŒºåŸŸç»“å°¾
+	// ÇøÓò½áÎ²
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
 		//Tools::OpenConsole();
 		if (server.StartUp())
 		{
-			std::cout << "å‡†å¤‡å°±ç»ª" << std::endl;
+			std::cout << "×¼±¸¾ÍĞ÷" << std::endl;
 			CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ThreadSocket, NULL, 0, NULL);
 		}
 		break;
@@ -48,7 +48,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 
 
-// æœåŠ¡ç«¯socketçº¿ç¨‹
+// ·şÎñ¶ËsocketÏß³Ì
 DWORD ThreadSocket()
 {
 	server.Loop();

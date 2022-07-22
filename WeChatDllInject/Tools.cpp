@@ -53,14 +53,14 @@ DWORD Tools::InjectedDllAddress(HANDLE hProcess, const std::wstring dllName)
 		return NULL;
 	}
 
-	// æ³¨å…¥æ¨¡å—åç§°
+	// ×¢ÈëÄ£¿éÃû³Æ
 	LPVOID dllNameAddr = WriteTextToMemory(hProcess, dllName);
 	if (dllNameAddr == NULL) {
-		//MessageBox(NULL, L"æ¨¡å—åç§°å†™å…¥å¤±è´¥,è¯·é‡å¯å¾®ä¿¡åé‡è¯•", L"é”™è¯¯", 0);
+		//MessageBox(NULL, L"Ä£¿éÃû³ÆĞ´ÈëÊ§°Ü,ÇëÖØÆôÎ¢ĞÅºóÖØÊÔ", L"´íÎó", 0);
 		return NULL;
 	}
 
-	// è·å–åˆ°æ¨¡å—åœ°å€
+	// »ñÈ¡µ½Ä£¿éµØÖ·
 	HANDLE exec = CreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)GetModuleHandle, dllNameAddr, 0, NULL);
 	if (exec == NULL)
 	{
@@ -94,7 +94,7 @@ LPVOID Tools::WriteTextToMemory(HANDLE hProcess, const std::wstring text)
 	LPVOID dllPathAddr = VirtualAllocEx(hProcess, NULL, wcslen(text.c_str()) * 2, MEM_COMMIT, PAGE_READWRITE);
 	if (dllPathAddr == NULL)
 	{
-		//MessageBox(NULL, L"å†…å­˜åˆ†é…å¤±è´¥,é‡å¯å¾®ä¿¡åé‡è¯•", L"é”™è¯¯", 0);
+		//MessageBox(NULL, L"ÄÚ´æ·ÖÅäÊ§°Ü,ÖØÆôÎ¢ĞÅºóÖØÊÔ", L"´íÎó", 0);
 		return NULL;
 	}
 	BOOL success = WriteProcessMemory(hProcess, dllPathAddr, text.c_str(), wcslen(text.c_str()) * 2, NULL);
@@ -114,29 +114,29 @@ DWORD Tools::InjectDll(HANDLE hProcess, std::wstring dllPath)
 		return NULL;
 	}
 
-	// å†™å…¥dllè·¯å¾„
+	// Ğ´ÈëdllÂ·¾¶
 	LPVOID dllPathAddr = Tools::WriteTextToMemory(hProcess, dllPath);
 	if (dllPathAddr == NULL)
 	{
-		//MessageBox(NULL, L"DLLè·¯å¾„å†™å…¥ç›®æ ‡è¿›ç¨‹å¤±è´¥,é‡å¯å¾®ä¿¡åé‡è¯•", L"é”™è¯¯", 0);
+		//MessageBox(NULL, L"DLLÂ·¾¶Ğ´ÈëÄ¿±ê½ø³ÌÊ§°Ü,ÖØÆôÎ¢ĞÅºóÖØÊÔ", L"´íÎó", 0);
 		return NULL;
 	}
 
-	// è·å–loadLibraryWå‡½æ•°åœ°å€
+	// »ñÈ¡loadLibraryWº¯ÊıµØÖ·
 	HMODULE kernel32 = GetModuleHandle(L"kernel32.dll");
-	if (kernel32 == NULL) { MessageBox(NULL, L"æœªæ‰¾kernel32æ¨¡å—", L"é”™è¯¯", 0);  return NULL; }
+	if (kernel32 == NULL) { MessageBox(NULL, L"Î´ÕÒkernel32Ä£¿é", L"´íÎó", 0);  return NULL; }
 	LPVOID libraryAddr = GetProcAddress(kernel32, "LoadLibraryW");
 	if (libraryAddr == NULL)
 	{
 		VirtualFreeEx(hProcess, dllPathAddr, 0, MEM_RELEASE);
-		//MessageBox(NULL, L"æœªæ‰¾LoadLibraryWå‡½æ•°", L"é”™è¯¯", 0);
+		//MessageBox(NULL, L"Î´ÕÒLoadLibraryWº¯Êı", L"´íÎó", 0);
 		return NULL;
 	}
-	// è¿œç¨‹å‘½ä»¤è½½å…¥DLL
+	// Ô¶³ÌÃüÁîÔØÈëDLL
 	HANDLE exec = CreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)libraryAddr, dllPathAddr, 0, NULL);
 	if (exec == NULL) {
 		VirtualFreeEx(hProcess, dllPathAddr, 0, MEM_RELEASE);
-		//MessageBox(NULL, L"Dllæ³¨å…¥å¤±è´¥", L"é”™è¯¯", 0);
+		//MessageBox(NULL, L"Dll×¢ÈëÊ§°Ü", L"´íÎó", 0);
 		return NULL;
 	}
 	WaitForSingleObject(exec, INFINITE);
@@ -155,7 +155,7 @@ bool Tools::FreeDll(HANDLE hProcess, DWORD dllAddr)
 
 	HMODULE kernel32 = GetModuleHandle(L"kernel32.dll");
 	if (kernel32 == NULL) {
-		//MessageBox(NULL, L"æœªæ‰¾kernel32æ¨¡å—", L"é”™è¯¯", 0); 
+		//MessageBox(NULL, L"Î´ÕÒkernel32Ä£¿é", L"´íÎó", 0); 
 		return false;
 	}
 	LPVOID FreelibraryAddr = GetProcAddress(kernel32, "FreeLibrary");
@@ -164,7 +164,7 @@ bool Tools::FreeDll(HANDLE hProcess, DWORD dllAddr)
 	if (exec1 == NULL)
 	{
 		VirtualFreeEx(hProcess, (LPVOID)dllAddr, 0, MEM_RELEASE);
-		//MessageBox(NULL, L"Dllé‡Šæ”¾å¤±è´¥", L"é”™è¯¯", 0);
+		//MessageBox(NULL, L"DllÊÍ·ÅÊ§°Ü", L"´íÎó", 0);
 		return false;
 	}
 
@@ -174,7 +174,7 @@ bool Tools::FreeDll(HANDLE hProcess, DWORD dllAddr)
 std::wstring Tools::BrowserFileWindow(const WCHAR* lpstrFilter)
 {
 	OPENFILENAME ofn;// 
-	TCHAR szFile[MAX_PATH];// ä¿å­˜è·å–â½‚ä»¶åç§°çš„ç¼“å†²åŒº
+	TCHAR szFile[MAX_PATH];// ±£´æ»ñÈ¡?¼şÃû³ÆµÄ»º³åÇø
 	ZeroMemory(&ofn, sizeof(OPENFILENAME));
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner = NULL;
@@ -182,12 +182,12 @@ std::wstring Tools::BrowserFileWindow(const WCHAR* lpstrFilter)
 	ofn.lpstrFile[0] = '\0';
 	ofn.nMaxFile = sizeof(szFile);
 
-	ofn.lpstrFilter = lpstrFilter; // L"All\0*.*\0Text\0*.TXT\0Image\0*.PNG;*.JPG\0";//è¿‡æ»¤è§„åˆ™
+	ofn.lpstrFilter = lpstrFilter; // L"All\0*.*\0Text\0*.TXT\0Image\0*.PNG;*.JPG\0";//¹ıÂË¹æÔò
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;
 
-	ofn.lpstrInitialDir = L"C:\\Program Files";//æŒ‡å®šé»˜è®¤è·¯å¾„
+	ofn.lpstrInitialDir = L"C:\\Program Files";//Ö¸¶¨Ä¬ÈÏÂ·¾¶
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 	if (GetOpenFileName(&ofn))
 	{
@@ -242,7 +242,7 @@ HWND Tools::FindDialog(std::wstring title)
 
 void Tools::OpenConsole()
 {
-	//æ‰“å¼€æ§åˆ¶å°,ç»‘å®šåˆ°æ ‡å‡†è¾“å…¥è¾“å‡º
+	//´ò¿ª¿ØÖÆÌ¨,°ó¶¨µ½±ê×¼ÊäÈëÊä³ö
 	AllocConsole();
 	FILE* ofp, * ifp;
 	freopen_s(&ofp, "CONOUT$", "w", stdout);
@@ -256,19 +256,19 @@ void Tools::CloseConsole()
 
 bool Tools::GetBaseBoardByCmd(char* lpszBaseBoard, int len)
 {
-	const long MAX_COMMAND_SIZE = 10000; // å‘½ä»¤è¡Œè¾“å‡ºç¼“å†²å¤§å°	
-	WCHAR szFetCmd[] = L"wmic BaseBoard get SerialNumber"; // è·å–ä¸»æ¿åºåˆ—å·å‘½ä»¤è¡Œ	
-	const std::string strEnSearch = "SerialNumber"; // ä¸»æ¿åºåˆ—å·çš„å‰å¯¼ä¿¡æ¯
+	const long MAX_COMMAND_SIZE = 10000; // ÃüÁîĞĞÊä³ö»º³å´óĞ¡	
+	WCHAR szFetCmd[] = L"wmic BaseBoard get SerialNumber"; // »ñÈ¡Ö÷°åĞòÁĞºÅÃüÁîĞĞ	
+	const std::string strEnSearch = "SerialNumber"; // Ö÷°åĞòÁĞºÅµÄÇ°µ¼ĞÅÏ¢
 	int j = 0;
 
 	BOOL   bret = FALSE;
-	HANDLE hReadPipe = NULL; //è¯»å–ç®¡é“
-	HANDLE hWritePipe = NULL; //å†™å…¥ç®¡é“	
-	PROCESS_INFORMATION pi;   //è¿›ç¨‹ä¿¡æ¯	
-	STARTUPINFO			si;	  //æ§åˆ¶å‘½ä»¤è¡Œçª—å£ä¿¡æ¯
-	SECURITY_ATTRIBUTES sa;   //å®‰å…¨å±æ€§
+	HANDLE hReadPipe = NULL; //¶ÁÈ¡¹ÜµÀ
+	HANDLE hWritePipe = NULL; //Ğ´Èë¹ÜµÀ	
+	PROCESS_INFORMATION pi;   //½ø³ÌĞÅÏ¢	
+	STARTUPINFO			si;	  //¿ØÖÆÃüÁîĞĞ´°¿ÚĞÅÏ¢
+	SECURITY_ATTRIBUTES sa;   //°²È«ÊôĞÔ
 
-	char			szBuffer[MAX_COMMAND_SIZE + 1] = { 0 }; // æ”¾ç½®å‘½ä»¤è¡Œç»“æœçš„è¾“å‡ºç¼“å†²åŒº
+	char			szBuffer[MAX_COMMAND_SIZE + 1] = { 0 }; // ·ÅÖÃÃüÁîĞĞ½á¹ûµÄÊä³ö»º³åÇø
 	std::string			strBuffer;
 	unsigned long	count = 0;
 	long			ipos = 0;
@@ -284,7 +284,7 @@ bool Tools::GetBaseBoardByCmd(char* lpszBaseBoard, int len)
 	sa.lpSecurityDescriptor = NULL;
 	sa.bInheritHandle = TRUE;
 
-	//1.0 åˆ›å»ºç®¡é“
+	//1.0 ´´½¨¹ÜµÀ
 	bret = CreatePipe(&hReadPipe, &hWritePipe, &sa, 0);
 	if (!bret)
 	{
@@ -292,14 +292,14 @@ bool Tools::GetBaseBoardByCmd(char* lpszBaseBoard, int len)
 		return false;
 	}
 
-	//2.0 è®¾ç½®å‘½ä»¤è¡Œçª—å£çš„ä¿¡æ¯ä¸ºæŒ‡å®šçš„è¯»å†™ç®¡é“
+	//2.0 ÉèÖÃÃüÁîĞĞ´°¿ÚµÄĞÅÏ¢ÎªÖ¸¶¨µÄ¶ÁĞ´¹ÜµÀ
 	GetStartupInfo(&si);
 	si.hStdError = hWritePipe;
 	si.hStdOutput = hWritePipe;
-	si.wShowWindow = SW_HIDE; //éšè—å‘½ä»¤è¡Œçª—å£
+	si.wShowWindow = SW_HIDE; //Òş²ØÃüÁîĞĞ´°¿Ú
 	si.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
 
-	//3.0 åˆ›å»ºè·å–å‘½ä»¤è¡Œçš„è¿›ç¨‹
+	//3.0 ´´½¨»ñÈ¡ÃüÁîĞĞµÄ½ø³Ì
 	bret = CreateProcess(NULL, szFetCmd, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi);
 	if (!bret)
 	{
@@ -307,7 +307,7 @@ bool Tools::GetBaseBoardByCmd(char* lpszBaseBoard, int len)
 		return false;
 	}
 
-	//4.0 è¯»å–è¿”å›çš„æ•°æ®
+	//4.0 ¶ÁÈ¡·µ»ØµÄÊı¾İ
 	WaitForSingleObject(pi.hProcess, 500/*INFINITE*/);
 	bret = ReadFile(hReadPipe, szBuffer, MAX_COMMAND_SIZE, &count, 0);
 	if (!bret)
@@ -316,12 +316,12 @@ bool Tools::GetBaseBoardByCmd(char* lpszBaseBoard, int len)
 		return false;
 	}
 
-	//5.0 æŸ¥æ‰¾ä¸»æ¿åºåˆ—å·
+	//5.0 ²éÕÒÖ÷°åĞòÁĞºÅ
 	bret = FALSE;
 	strBuffer = szBuffer;
 	ipos = strBuffer.find(strEnSearch);
 
-	if (ipos < 0) // æ²¡æœ‰æ‰¾åˆ°
+	if (ipos < 0) // Ã»ÓĞÕÒµ½
 	{
 		goto END;
 		return false;
@@ -334,7 +334,7 @@ bool Tools::GetBaseBoardByCmd(char* lpszBaseBoard, int len)
 	memset(szBuffer, 0x00, sizeof(szBuffer));
 	strcpy_s(szBuffer, strBuffer.c_str());
 
-	//å»æ‰ä¸­é—´çš„ç©ºæ ¼ \r \n
+	//È¥µôÖĞ¼äµÄ¿Õ¸ñ \r \n
 	//int j = 0;
 	for (int i = 0; i < strlen(szBuffer); i++)
 	{
@@ -348,7 +348,7 @@ bool Tools::GetBaseBoardByCmd(char* lpszBaseBoard, int len)
 	bret = TRUE;
 
 END:
-	//å…³é—­æ‰€æœ‰çš„å¥æŸ„
+	//¹Ø±ÕËùÓĞµÄ¾ä±ú
 	CloseHandle(hWritePipe);
 	CloseHandle(hReadPipe);
 	CloseHandle(pi.hProcess);
@@ -408,9 +408,9 @@ std::string Tools::HexArrayToCharString(std::string src)
 
 std::wstring Tools::String2Wstring(std::string sToMatch)
 {
-	int iWLen = MultiByteToWideChar(CP_ACP, 0, sToMatch.c_str(), sToMatch.size(), 0, 0); // è®¡ç®—è½¬æ¢åå®½å­—ç¬¦ä¸²çš„é•¿åº¦ã€‚ï¼ˆä¸åŒ…å«å­—ç¬¦ä¸²ç»“æŸç¬¦ï¼‰
+	int iWLen = MultiByteToWideChar(CP_ACP, 0, sToMatch.c_str(), sToMatch.size(), 0, 0); // ¼ÆËã×ª»»ºó¿í×Ö·û´®µÄ³¤¶È¡££¨²»°üº¬×Ö·û´®½áÊø·û£©
 	wchar_t* lpwsz = new wchar_t[iWLen + 1];
-	MultiByteToWideChar(CP_ACP, 0, sToMatch.c_str(), sToMatch.size(), lpwsz, iWLen); // æ­£å¼è½¬æ¢ã€‚
+	MultiByteToWideChar(CP_ACP, 0, sToMatch.c_str(), sToMatch.size(), lpwsz, iWLen); // ÕıÊ½×ª»»¡£
 	lpwsz[iWLen] = L'\0';
 	std::wstring wsToMatch(lpwsz);
 	delete[]lpwsz;
@@ -420,17 +420,17 @@ std::wstring Tools::String2Wstring(std::string sToMatch)
 std::string Tools::Wstring2String(std::wstring sToMatch)
 {
 	std::string sResult;
-	int iLen = WideCharToMultiByte(CP_ACP, NULL, sToMatch.c_str(), -1, NULL, 0, NULL, FALSE); // è®¡ç®—è½¬æ¢åå­—ç¬¦ä¸²çš„é•¿åº¦ã€‚ï¼ˆåŒ…å«å­—ç¬¦ä¸²ç»“æŸç¬¦ï¼‰
+	int iLen = WideCharToMultiByte(CP_ACP, NULL, sToMatch.c_str(), -1, NULL, 0, NULL, FALSE); // ¼ÆËã×ª»»ºó×Ö·û´®µÄ³¤¶È¡££¨°üº¬×Ö·û´®½áÊø·û£©
 	char* lpsz = new char[iLen];
-	WideCharToMultiByte(CP_OEMCP, NULL, sToMatch.c_str(), -1, lpsz, iLen, NULL, FALSE); // æ­£å¼è½¬æ¢ã€‚
-	sResult.assign(lpsz, iLen - 1); // å¯¹stringå¯¹è±¡è¿›è¡Œèµ‹å€¼ã€‚
+	WideCharToMultiByte(CP_OEMCP, NULL, sToMatch.c_str(), -1, lpsz, iLen, NULL, FALSE); // ÕıÊ½×ª»»¡£
+	sResult.assign(lpsz, iLen - 1); // ¶Ôstring¶ÔÏó½øĞĞ¸³Öµ¡£
 	delete[]lpsz;
 	return sResult;
 }
 
 int Tools::GetRandomInt(int from, int to)
 {
-	//æ›´æ–°éšæœºç§å­
+	//¸üĞÂËæ»úÖÖ×Ó
 	srand((unsigned)time(NULL));
 	return (rand() % (to - from + 1)) + from;
 }

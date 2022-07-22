@@ -11,23 +11,23 @@
 #include <cctype>
 #include "BigInteger.h"
 
- // ä»¥ä¸‹è¡¨ç¤ºä¸ºé™æ€å¸¸é‡èµ‹å€¼
+ // ÒÔÏÂ±íÊ¾Îª¾²Ì¬³£Á¿¸³Öµ
 const BigInteger BigInteger::ZERO = BigInteger(0);
 const BigInteger BigInteger::ONE = BigInteger(1);
 const BigInteger BigInteger::TWO = BigInteger(2);
 const BigInteger BigInteger::TEN = BigInteger(10);
 
 /**
- * å‡½æ•°åŠŸèƒ½:æ ¹æ®ç»™å®šçš„å¤§æ•´æ•°æ„é€ ä¸€ä¸ªæ–°çš„å¤§æ•´æ•°
- * å‚æ•°å«ä¹‰:valä»£è¡¨ç»™å®šçš„å¤§æ•´æ•°
+ * º¯Êı¹¦ÄÜ:¸ù¾İ¸ø¶¨µÄ´óÕûÊı¹¹ÔìÒ»¸öĞÂµÄ´óÕûÊı
+ * ²ÎÊıº¬Òå:val´ú±í¸ø¶¨µÄ´óÕûÊı
  */
 BigInteger::BigInteger(const BigInteger& val) {
 	*this = val;
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:æ ¹æ®ç»™å®šçš„åå…­è¿›åˆ¶å­—ç¬¦ä¸²æ•°æ®æ„é€ ä¸€ä¸ªå¤§æ•´æ•°
- * å‚æ•°å«ä¹‰:strä»£è¡¨ç»™å®šçš„æ•°æ®
+ * º¯Êı¹¦ÄÜ:¸ù¾İ¸ø¶¨µÄÊ®Áù½øÖÆ×Ö·û´®Êı¾İ¹¹ÔìÒ»¸ö´óÕûÊı
+ * ²ÎÊıº¬Òå:str´ú±í¸ø¶¨µÄÊı¾İ
  */
 BigInteger::BigInteger(const std::string& str) : is_negative(false) {
 	std::string t(str);
@@ -36,7 +36,7 @@ BigInteger::BigInteger(const std::string& str) : is_negative(false) {
 			is_negative = true;
 		t = t.substr(1);
 	}
-	int cnt = (8 - (t.size() % 8)) % 8;// æ•°çš„é•¿åº¦ä¸æ˜¯8çš„å€æ•°,è¡¥è¶³0
+	int cnt = (8 - (t.size() % 8)) % 8;// ÊıµÄ³¤¶È²»ÊÇ8µÄ±¶Êı,²¹×ã0
 	std::string temp;
 
 	for (int i = 0; i < cnt; ++i)
@@ -46,20 +46,20 @@ BigInteger::BigInteger(const std::string& str) : is_negative(false) {
 
 	for (size_t i = 0; i < t.size(); i += base_char) {
 		base_t sum = 0;
-		for (int j = 0; j < base_char; ++j) {    // 8ä½åå…­è¿›åˆ¶ç»„æˆå¤§æ•´æ•°çš„ä¸€ä½
+		for (int j = 0; j < base_char; ++j) {    // 8Î»Ê®Áù½øÖÆ×é³É´óÕûÊıµÄÒ»Î»
 			char ch = t[i + j];
 			int num = hexToNum(ch);
 			sum = ((sum << 4) | (num));
 		}
 		data.push_back(sum);
 	}
-	reverse(data.begin(), data.end());// é«˜ä½åœ¨å
-	*this = trim();// å»é™¤é«˜ä½çš„0
+	reverse(data.begin(), data.end());// ¸ßÎ»ÔÚºó
+	*this = trim();// È¥³ı¸ßÎ»µÄ0
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:æ ¹æ®ç»™å®šçš„long_tç±»å‹æ•°æ®æ„é€ ä¸€ä¸ªå¤§æ•´æ•°
- * å‚æ•°å«ä¹‰:numä»£è¡¨ç»™å®šçš„æ•°æ®
+ * º¯Êı¹¦ÄÜ:¸ù¾İ¸ø¶¨µÄlong_tÀàĞÍÊı¾İ¹¹ÔìÒ»¸ö´óÕûÊı
+ * ²ÎÊıº¬Òå:num´ú±í¸ø¶¨µÄÊı¾İ
  */
 BigInteger::BigInteger(const long_t& num) : is_negative(false) {
 	long_t t = num;
@@ -68,46 +68,46 @@ BigInteger::BigInteger(const long_t& num) : is_negative(false) {
 		t = -t;
 	}
 	do {
-		base_t temp = (t & base_num);    // æ¯æ¬¡æˆªå–ä½32ä½
+		base_t temp = (t & base_num);    // Ã¿´Î½ØÈ¡µÍ32Î»
 		data.push_back(temp);
 		t >>= base_int;
 	} while (t);
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å¤§æ•´æ•°åŠ æ³•è¿ç®—
- * å‚æ•°å«ä¹‰:valä»£è¡¨åŠ æ•°
+ * º¯Êı¹¦ÄÜ:´óÕûÊı¼Ó·¨ÔËËã
+ * ²ÎÊıº¬Òå:val´ú±í¼ÓÊı
  */
 BigInteger BigInteger::add(const BigInteger& val) {
 	BigInteger ans(*this);
-	if (ans.is_negative == val.is_negative) {// åŒå·
+	if (ans.is_negative == val.is_negative) {// Í¬ºÅ
 		int len = val.data.size() - ans.data.size();
 
-		while ((len--) > 0)    // è¢«åŠ æ•°ä½æ•°å°‘,é«˜ä½è¡¥0
+		while ((len--) > 0)    // ±»¼ÓÊıÎ»ÊıÉÙ,¸ßÎ»²¹0
 			ans.data.push_back(0);
 
-		int carry = 0;    // è¿›ä½
+		int carry = 0;    // ½øÎ»
 		for (size_t i = 0; i < val.data.size(); ++i) {
 			base_t temp = ans.data[i];
-			ans.data[i] += val.data[i] + carry;    // æ— ç¬¦å·æ•°ç›¸åŠ ,è¶…å‡ºå–å…¶ä½™æ•°
-			// è¿›ä½:ä¸€ç§æ˜¯æœ‰æ— è¿›ä½éƒ½è¶…å‡º,ä¸€ç§æ˜¯æœ‰è¿›ä½æ‰è¶…å‡º(æ¯”å¦‚åè¿›åˆ¶ç›¸åŠ ,9+9+1,å¾—9,9+0+0,å¾—9)
+			ans.data[i] += val.data[i] + carry;    // ÎŞ·ûºÅÊıÏà¼Ó,³¬³öÈ¡ÆäÓàÊı
+			// ½øÎ»:Ò»ÖÖÊÇÓĞÎŞ½øÎ»¶¼³¬³ö,Ò»ÖÖÊÇÓĞ½øÎ»²Å³¬³ö(±ÈÈçÊ®½øÖÆÏà¼Ó,9+9+1,µÃ9,9+0+0,µÃ9)
 			carry = (temp > ans.data[i] ? 1 : (temp > (temp + val.data[i]) ? 1 : 0));
 		}
 
-		for (size_t i = val.data.size(); i < ans.data.size() && carry != 0; ++i) {// è¿˜æœ‰è¿›ä½
+		for (size_t i = val.data.size(); i < ans.data.size() && carry != 0; ++i) {// »¹ÓĞ½øÎ»
 			base_t temp = ans.data[i];
 			ans.data[i] += carry;
 			carry = temp > ans.data[i];
 		}
 
-		if (carry)    // è¿˜æœ‰è¿›ä½
+		if (carry)    // »¹ÓĞ½øÎ»
 			ans.data.push_back(carry);
 	}
-	else {    // å¼‚å·
+	else {    // ÒìºÅ
 		BigInteger a = abs();
 		BigInteger b = val.abs();
 		int flag = a.compareTo(b);
-		// ç»å¯¹å€¼ç›¸ç­‰,åˆ™ç»“æœä¸º0,å¦åˆ™ç”¨ç»å¯¹å€¼å¤§çš„å‡å»å°çš„,ç¬¦å·éšç»å¯¹å€¼å¤§çš„
+		// ¾ø¶ÔÖµÏàµÈ,Ôò½á¹ûÎª0,·ñÔòÓÃ¾ø¶ÔÖµ´óµÄ¼õÈ¥Ğ¡µÄ,·ûºÅËæ¾ø¶ÔÖµ´óµÄ
 		if (flag == -1) {
 			ans = b.subtract(a);
 			ans.is_negative = val.is_negative;
@@ -123,64 +123,64 @@ BigInteger BigInteger::add(const BigInteger& val) {
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å¤§æ•´æ•°å‡æ³•è¿ç®—
- * å‚æ•°å«ä¹‰:valä»£è¡¨å‡æ•°
+ * º¯Êı¹¦ÄÜ:´óÕûÊı¼õ·¨ÔËËã
+ * ²ÎÊıº¬Òå:val´ú±í¼õÊı
  */
 BigInteger BigInteger::subtract(const BigInteger& val) {
 	BigInteger ans(*this);
 	BigInteger a = abs();
 	BigInteger b = val.abs();
-	if (ans.is_negative == val.is_negative) {// åŒå·
+	if (ans.is_negative == val.is_negative) {// Í¬ºÅ
 		int flag = a.compareTo(b);
-		if (flag == 1) {// açš„ç»å¯¹å€¼å¤§äºbçš„ç»å¯¹å€¼,ç›´æ¥å‡
-			int borrow = 0;    // å€Ÿä½
-			// å¤§æ•°å‡å°æ•°
+		if (flag == 1) {// aµÄ¾ø¶ÔÖµ´óÓÚbµÄ¾ø¶ÔÖµ,Ö±½Ó¼õ
+			int borrow = 0;    // ½èÎ»
+			// ´óÊı¼õĞ¡Êı
 			for (size_t i = 0; i < val.data.size(); ++i) {
 				base_t temp = ans.data[i];
 				ans.data[i] -= val.data[i] + borrow;
-				// å€Ÿä½:ä¸€ç§æ˜¯æœ‰æ— å€Ÿä½éƒ½è¶…å‡º,å¦ä¸€ç§æ˜¯æœ‰å€Ÿä½æ‰è¶…å‡º(æ¯”å¦‚åè¿›åˆ¶ç›¸å‡,9-0-0,å¾—9,9-9-1,å¾—9)
+				// ½èÎ»:Ò»ÖÖÊÇÓĞÎŞ½èÎ»¶¼³¬³ö,ÁíÒ»ÖÖÊÇÓĞ½èÎ»²Å³¬³ö(±ÈÈçÊ®½øÖÆÏà¼õ,9-0-0,µÃ9,9-9-1,µÃ9)
 				borrow = temp < ans.data[i] ? 1 : (temp - borrow < val.data[i] ? 1 : 0);
 			}
-			for (size_t i = val.data.size(); i < ans.data.size() && borrow != 0; ++i) {// è¿˜æœ‰å€Ÿä½
+			for (size_t i = val.data.size(); i < ans.data.size() && borrow != 0; ++i) {// »¹ÓĞ½èÎ»
 				base_t temp = ans.data[i];
 				ans.data[i] -= borrow;
 				borrow = temp < (base_t)borrow;
 			}
-			ans = ans.trim();// å»æ‰é«˜ä½å¤šä½™çš„0
+			ans = ans.trim();// È¥µô¸ßÎ»¶àÓàµÄ0
 		}
 		else if (flag == 0)
 			ans = ZERO;
-		else {// açš„ç»å¯¹å€¼å°äºbçš„ç»å¯¹å€¼
+		else {// aµÄ¾ø¶ÔÖµĞ¡ÓÚbµÄ¾ø¶ÔÖµ
 			ans = b.subtract(a);
 			ans.is_negative = !is_negative;
 		}
 	}
-	else {    // å¼‚å·
-		ans = a.add(b);    // è½¬æ¢ä¸ºåŠ æ³•
+	else {    // ÒìºÅ
+		ans = a.add(b);    // ×ª»»Îª¼Ó·¨
 		ans.is_negative = is_negative;
 	}
 	return ans;
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å¤§æ•´æ•°ä¹˜æ³•è¿ç®—
- * å‚æ•°å«ä¹‰:valä»£è¡¨ä¹˜æ•°
+ * º¯Êı¹¦ÄÜ:´óÕûÊı³Ë·¨ÔËËã
+ * ²ÎÊıº¬Òå:val´ú±í³ËÊı
  */
 BigInteger BigInteger::multiply(const BigInteger& val) const {
 	if (equals(ZERO) || val.equals(ZERO))
 		return ZERO;
-	// å°†ä½æ•°å°‘çš„ä½œä¸ºä¹˜æ•°
+	// ½«Î»ÊıÉÙµÄ×÷Îª³ËÊı
 	const BigInteger& big = data.size() > val.data.size() ? (*this) : val;
 	const BigInteger& small = (&big) == (this) ? val : (*this);
 
 	BigInteger ans;
-	bit t(small);    // è½¬æ¢ä¸ºäºŒè¿›åˆ¶è¿›è¡Œè¿ç®—
+	bit t(small);    // ×ª»»Îª¶ş½øÖÆ½øĞĞÔËËã
 
 	for (int i = t.size() - 1; i >= 0; --i)
 		if (t.at(i)) {
 			BigInteger temp(big);
 			temp.is_negative = false;
-			temp = temp.shiftLeft(i);    // ç§»ä½å¯¹é½
+			temp = temp.shiftLeft(i);    // ÒÆÎ»¶ÔÆë
 			ans = ans.add(temp);
 		}
 	ans.is_negative = !(is_negative == val.is_negative);
@@ -188,8 +188,8 @@ BigInteger BigInteger::multiply(const BigInteger& val) const {
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å¤§æ•´æ•°æ•´é™¤è¿ç®—
- * å‚æ•°å«ä¹‰:valä»£è¡¨é™¤æ•°
+ * º¯Êı¹¦ÄÜ:´óÕûÊıÕû³ıÔËËã
+ * ²ÎÊıº¬Òå:val´ú±í³ıÊı
  */
 BigInteger BigInteger::divide(const BigInteger& val) {
 	BigInteger temp;
@@ -198,8 +198,8 @@ BigInteger BigInteger::divide(const BigInteger& val) {
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å¤§æ•´æ•°å–ä½™è¿ç®—
- * å‚æ•°å«ä¹‰:valä»£è¡¨é™¤æ•°
+ * º¯Êı¹¦ÄÜ:´óÕûÊıÈ¡ÓàÔËËã
+ * ²ÎÊıº¬Òå:val´ú±í³ıÊı
  */
 BigInteger BigInteger::remainder(const BigInteger& val) {
 	BigInteger ans;
@@ -208,8 +208,8 @@ BigInteger BigInteger::remainder(const BigInteger& val) {
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å¤§æ•´æ•°å–æ¨¡è¿ç®—(ä¸åŒäºå–ä½™,è¯¥å‡½æ•°æ€»æ˜¯è¿”å›æ­£ä½™æ•°)
- * å‚æ•°å«ä¹‰:mä»£è¡¨æ¨¡æ•°
+ * º¯Êı¹¦ÄÜ:´óÕûÊıÈ¡Ä£ÔËËã(²»Í¬ÓÚÈ¡Óà,¸Ãº¯Êı×ÜÊÇ·µ»ØÕıÓàÊı)
+ * ²ÎÊıº¬Òå:m´ú±íÄ£Êı
  */
 BigInteger BigInteger::mod(const BigInteger& m) {
 	BigInteger ans = remainder(m);
@@ -219,15 +219,15 @@ BigInteger BigInteger::mod(const BigInteger& m) {
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å¤§æ•´æ•°æ•´é™¤è¿ç®—å’Œå–ä½™è¿ç®—,æ•´é™¤ç»“æœç›´æ¥è¿”å›,å–ä½™ç»“æœç”±mä¼ å›
- * å‚æ•°å«ä¹‰:valè¡¨ç¤ºé™¤æ•°,mè¡¨ç¤ºå–ä½™ç»“æœ
+ * º¯Êı¹¦ÄÜ:´óÕûÊıÕû³ıÔËËãºÍÈ¡ÓàÔËËã,Õû³ı½á¹ûÖ±½Ó·µ»Ø,È¡Óà½á¹ûÓÉm´«»Ø
+ * ²ÎÊıº¬Òå:val±íÊ¾³ıÊı,m±íÊ¾È¡Óà½á¹û
  */
 BigInteger BigInteger::divideAndRemainder(const BigInteger& val, BigInteger& m) {
 	assert(!val.equals(ZERO));
 	BigInteger a = abs();
 	BigInteger b = val.abs();
 	int flag = a.compareTo(b);
-	if (flag == 0)// ç»å¯¹å€¼ç›¸ç­‰
+	if (flag == 0)// ¾ø¶ÔÖµÏàµÈ
 		return (is_negative == val.is_negative) ? BigInteger(1) : BigInteger(-1);
 	if (flag == -1) {
 		m = *this;
@@ -236,28 +236,28 @@ BigInteger BigInteger::divideAndRemainder(const BigInteger& val, BigInteger& m) 
 	BigInteger ans;
 
 	bit bit_b(b);
-	// ä½æ•°å¯¹é½
-	while (true) {// açš„ç»å¯¹å€¼å¤§äºbçš„ç»å¯¹å€¼
+	// Î»Êı¶ÔÆë
+	while (true) {// aµÄ¾ø¶ÔÖµ´óÓÚbµÄ¾ø¶ÔÖµ
 		bit bit_a(a);
 		int len = bit_a.size() - bit_b.size();
 		BigInteger temp;
-		// æ‰¾åˆ°ç§»ä½
+		// ÕÒµ½ÒÆÎ»
 		while (len >= 0) {
 			temp = b.shiftLeft(len);
-			if (temp.compareTo(a) != 1)// æ‰¾åˆ°æœ€å¤§çš„å·¦ç§»ä½æ•°ä½¿å¾—å½“å‰çš„aå¤§äºç­‰äºb
+			if (temp.compareTo(a) != 1)// ÕÒµ½×î´óµÄ×óÒÆÎ»ÊıÊ¹µÃµ±Ç°µÄa´óÓÚµÈÓÚb
 				break;
 			--len;
 		}
-		if (len < 0)    // å½“å‰çš„aå°äºbäº†
+		if (len < 0)    // µ±Ç°µÄaĞ¡ÓÚbÁË
 			break;
 		base_t num = 0;
 		while (temp.compareTo(a) != 1) {
 			a = a.subtract(temp);
-			++num;    // ç»Ÿè®¡å½“å‰çš„aæœ€å¤šå¤§äºç­‰äºå‡ ä¸ªç§»ä½åçš„b
+			++num;    // Í³¼Æµ±Ç°µÄa×î¶à´óÓÚµÈÓÚ¼¸¸öÒÆÎ»ºóµÄb
 		}
 		temp = BigInteger(num);
 		if (len)
-			temp = temp.shiftLeft(len);// ç§»ä½åè¡¨æ˜å½“å‰çš„aæ˜¯bçš„å‡ å€
+			temp = temp.shiftLeft(len);// ÒÆÎ»ºó±íÃ÷µ±Ç°µÄaÊÇbµÄ¼¸±¶
 		ans = ans.add(temp);
 	}
 	ans.is_negative = !(is_negative == val.is_negative);
@@ -267,23 +267,23 @@ BigInteger BigInteger::divideAndRemainder(const BigInteger& val, BigInteger& m) 
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å¤§æ•´æ•°å¹‚ä¹˜è¿ç®—
- * å‚æ•°å«ä¹‰:exponentä»£è¡¨æŒ‡æ•°
+ * º¯Êı¹¦ÄÜ:´óÕûÊıÃİ³ËÔËËã
+ * ²ÎÊıº¬Òå:exponent´ú±íÖ¸Êı
  */
 BigInteger BigInteger::pow(const BigInteger& exponent) {
 	BigInteger ans(1);
-	bit t(exponent);    // è½¬åŒ–ä¸ºäºŒè¿›åˆ¶,å¿«é€Ÿæ±‚å¹‚
+	bit t(exponent);    // ×ª»¯Îª¶ş½øÖÆ,¿ìËÙÇóÃİ
 	for (int i = t.size() - 1; i >= 0; --i) {
 		ans = ans.multiply(ans);
 		if (t.at(i))
-			ans = multiply(ans);// ä»é«˜ä½å¼€å§‹,ä½æƒç´¯åŠ æ•ˆåº”
+			ans = multiply(ans);// ´Ó¸ßÎ»¿ªÊ¼,Î»È¨ÀÛ¼ÓĞ§Ó¦
 	}
 	return ans;
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å¤§æ•´æ•°æ¨¡å¹‚è¿ç®—
- * å‚æ•°å«ä¹‰:exponentä»£è¡¨æŒ‡æ•°,mä»£è¡¨æ¨¡æ•°
+ * º¯Êı¹¦ÄÜ:´óÕûÊıÄ£ÃİÔËËã
+ * ²ÎÊıº¬Òå:exponent´ú±íÖ¸Êı,m´ú±íÄ£Êı
  */
 BigInteger BigInteger::modPow(const BigInteger& exponent, const BigInteger& m) const {
 	assert(!m.equals(ZERO));
@@ -298,50 +298,50 @@ BigInteger BigInteger::modPow(const BigInteger& exponent, const BigInteger& m) c
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:æ‰©å±•æ¬§å‡ é‡Œå¾—ç®—æ³•æ±‚ä¹˜æ³•é€†å…ƒ
- * å‚æ•°å«ä¹‰:mä»£è¡¨æ±‚é€†å…ƒæ—¶çš„æ¨¡æ•°
+ * º¯Êı¹¦ÄÜ:À©Õ¹Å·¼¸ÀïµÃËã·¨Çó³Ë·¨ÄæÔª
+ * ²ÎÊıº¬Òå:m´ú±íÇóÄæÔªÊ±µÄÄ£Êı
  */
 BigInteger BigInteger::modInverse(const BigInteger& m) {
-	assert(!is_negative);    // å½“å‰å¤§æ•´æ•°ä¸ºæ­£æ•°
-	assert(!m.is_negative);    // mä¸ºæ­£æ•°
+	assert(!is_negative);    // µ±Ç°´óÕûÊıÎªÕıÊı
+	assert(!m.is_negative);    // mÎªÕıÊı
 	if (equals(ZERO) || m.equals(ZERO))
-		return ZERO;    // æœ‰ä¸€ä¸ªæ•°ä¸º0,å°±ä¸å­˜åœ¨ä¹˜æ³•é€†å…ƒ
+		return ZERO;    // ÓĞÒ»¸öÊıÎª0,¾Í²»´æÔÚ³Ë·¨ÄæÔª
 	BigInteger a[3], b[3], t[3];
-	// ä»¥ä¸‹è¿›è¡Œåˆç­‰å˜æ¢
+	// ÒÔÏÂ½øĞĞ³õµÈ±ä»»
 	a[0] = 0; a[1] = 1; a[2] = *this;
 	b[0] = 1; b[1] = 0; b[2] = m;
 
 	for (t[2] = a[2].mod(b[2]); !t[2].equals(ZERO); t[2] = a[2].mod(b[2])) {
 		BigInteger temp = a[2].divide(b[2]);
 		for (int i = 0; i < 3; ++i) {
-			t[i] = a[i].subtract(temp.multiply(b[i]));// ä¸è¶…è¿‡ä¸€æ¬¡a[2]-temp*b[2]å°±å˜ä¸ºå¤§æ•°å‡å°æ•°
+			t[i] = a[i].subtract(temp.multiply(b[i]));// ²»³¬¹ıÒ»´Îa[2]-temp*b[2]¾Í±äÎª´óÊı¼õĞ¡Êı
 			a[i] = b[i];
 			b[i] = t[i];
 		}
 	}
-	if (b[2].equals(ONE)) {// æœ€å¤§å…¬çº¦æ•°ä¸º1,å­˜åœ¨ä¹˜æ³•é€†å…ƒ
-		if (b[1].is_negative)// é€†å…ƒä¸ºè´Ÿæ•°
-			b[1] = b[1].add(m);// å˜ä¸ºæ­£æ•°,ä½¿å…¶åœ¨mçš„å‰©ä½™é›†ä¸­
+	if (b[2].equals(ONE)) {// ×î´ó¹«Ô¼ÊıÎª1,´æÔÚ³Ë·¨ÄæÔª
+		if (b[1].is_negative)// ÄæÔªÎª¸ºÊı
+			b[1] = b[1].add(m);// ±äÎªÕıÊı,Ê¹ÆäÔÚmµÄÊ£Óà¼¯ÖĞ
 		return b[1];
 	}
-	return ZERO;// æœ€å¤§å…¬çº¦æ•°ä¸ä¸º1,æ— ä¹˜æ³•é€†å…ƒ
+	return ZERO;// ×î´ó¹«Ô¼Êı²»Îª1,ÎŞ³Ë·¨ÄæÔª
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:ç§»ä½è¿ç®—,å·¦ç§»
- * å‚æ•°å«ä¹‰:lenä»£è¡¨ç§»ä½çš„ä½æ•°
+ * º¯Êı¹¦ÄÜ:ÒÆÎ»ÔËËã,×óÒÆ
+ * ²ÎÊıº¬Òå:len´ú±íÒÆÎ»µÄÎ»Êı
  */
 BigInteger BigInteger::shiftLeft(const unsigned len) {
-	int index = len >> base_bit;    // å¤§æ•´æ•°æ¯ä¸€ä½éœ€è¦ç§»åŠ¨å¤šå°‘ä½
-	int shift = len & base_temp;    // è¿˜å‰©ä¸‹å¤šå°‘ä½
+	int index = len >> base_bit;    // ´óÕûÊıÃ¿Ò»Î»ĞèÒªÒÆ¶¯¶àÉÙÎ»
+	int shift = len & base_temp;    // »¹Ê£ÏÂ¶àÉÙÎ»
 	BigInteger ans(*this);
 
-	int inc = (shift == 0) ? index : index + 1;// æœ‰å¤šä½™çš„ä½è¦å¤šå¼€å¤§æ•´æ•°çš„ä¸€ä½
+	int inc = (shift == 0) ? index : index + 1;// ÓĞ¶àÓàµÄÎ»Òª¶à¿ª´óÕûÊıµÄÒ»Î»
 	for (int i = 0; i < inc; ++i)
-		ans.data.push_back(0);    // é«˜ä½è¡¥0
+		ans.data.push_back(0);    // ¸ßÎ»²¹0
 
 	if (index) {
-		inc = (shift == 0) ? 1 : 2;// æœ‰å¤šä½™çš„ä½è¦é¢„ç•™ä¸€ä½
+		inc = (shift == 0) ? 1 : 2;// ÓĞ¶àÓàµÄÎ»ÒªÔ¤ÁôÒ»Î»
 		for (int i = ans.data.size() - inc; i >= index; --i)
 			ans.data[i] = ans.data[i - index];
 		for (int i = 0; i < index; ++i)
@@ -349,13 +349,13 @@ BigInteger BigInteger::shiftLeft(const unsigned len) {
 	}
 	if (shift) {
 		base_t t = base_num;
-		t <<= base_int - shift;    // ç”¨äºæˆªå–é«˜ä½
-		// å·¦ç§»
+		t <<= base_int - shift;    // ÓÃÓÚ½ØÈ¡¸ßÎ»
+		// ×óÒÆ
 		base_t temp = 0;
 		for (size_t i = 0; i < ans.data.size(); ++i) {
 			base_t tmp = ans.data[i];
-			ans.data[i] = (tmp << shift) | temp;// å·¦ç§»ååŠ ä¸Šå¤§æ•´æ•°ä½ä½çš„é«˜ä½
-			temp = (tmp & t) >> (base_int - shift);// è·å–è¯¥å¤§æ•´æ•°ä½çš„é«˜ä½
+			ans.data[i] = (tmp << shift) | temp;// ×óÒÆºó¼ÓÉÏ´óÕûÊıµÍÎ»µÄ¸ßÎ»
+			temp = (tmp & t) >> (base_int - shift);// »ñÈ¡¸Ã´óÕûÊıÎ»µÄ¸ßÎ»
 		}
 	}
 	ans = ans.trim();
@@ -363,32 +363,32 @@ BigInteger BigInteger::shiftLeft(const unsigned len) {
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:ç§»ä½è¿ç®—,å³ç§»
- * å‚æ•°å«ä¹‰:lenä»£è¡¨ç§»ä½çš„ä½æ•°
+ * º¯Êı¹¦ÄÜ:ÒÆÎ»ÔËËã,ÓÒÒÆ
+ * ²ÎÊıº¬Òå:len´ú±íÒÆÎ»µÄÎ»Êı
  */
 BigInteger BigInteger::shiftRight(const unsigned len) {
 	bit val(*this);
-	if (len >= val.size())// å½“å‰å¤§æ•´æ•°ä½æ•°å°äºç­‰äºç§»ä½ä½æ•°,è¿”å›0
+	if (len >= val.size())// µ±Ç°´óÕûÊıÎ»ÊıĞ¡ÓÚµÈÓÚÒÆÎ»Î»Êı,·µ»Ø0
 		return ZERO;
-	int index = len >> base_bit;// å¤§æ•´æ•°æ¯ä¸€ä½éœ€è¦ç§»åŠ¨å¤šå°‘ä½
-	int shift = len & base_temp;// è¿˜å‰©ä¸‹å¤šå°‘ä½
+	int index = len >> base_bit;// ´óÕûÊıÃ¿Ò»Î»ĞèÒªÒÆ¶¯¶àÉÙÎ»
+	int shift = len & base_temp;// »¹Ê£ÏÂ¶àÉÙÎ»
 	BigInteger ans(*this);
 
 	if (index) {
 		for (int i = 0; i < index; ++i)
 			ans.data[i] = ans.data[i + index];
 		for (int i = 0; i < index; ++i)
-			ans.data.pop_back();    // é«˜ä½åˆ é™¤
+			ans.data.pop_back();    // ¸ßÎ»É¾³ı
 	}
 	if (shift) {
 		base_t t = base_num;
-		t >>= base_int - shift;    // ç”¨äºæˆªå–ä½ä½
-		// å³ç§»
+		t >>= base_int - shift;    // ÓÃÓÚ½ØÈ¡µÍÎ»
+		// ÓÒÒÆ
 		base_t temp = 0;
 		for (int i = ans.data.size() - 1; i >= 0; --i) {
 			base_t tmp = ans.data[i];
-			ans.data[i] = (tmp >> shift) | temp;// å³ç§»ååŠ ä¸Šå¤§æ•´æ•°é«˜ä½çš„ä½ä½
-			temp = (tmp & t) << (base_int - shift);// è·å–è¯¥å¤§æ•´æ•°ä½çš„ä½ä½
+			ans.data[i] = (tmp >> shift) | temp;// ÓÒÒÆºó¼ÓÉÏ´óÕûÊı¸ßÎ»µÄµÍÎ»
+			temp = (tmp & t) << (base_int - shift);// »ñÈ¡¸Ã´óÕûÊıÎ»µÄµÍÎ»
 		}
 	}
 	ans = ans.trim();
@@ -396,60 +396,60 @@ BigInteger BigInteger::shiftRight(const unsigned len) {
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å¤§æ•´æ•°æ¯”è¾ƒå‡½æ•°,-1è¡¨ç¤ºæœ¬å¤§æ•´æ•°è¦å°,0è¡¨ç¤ºç›¸ç­‰,1è¡¨ç¤ºæœ¬å¤§æ•´æ•°è¦å¤§
- * å‚æ•°å«ä¹‰:valä»£è¡¨è¦ä¸ä¹‹æ¯”è¾ƒçš„å¤§æ•´æ•°
+ * º¯Êı¹¦ÄÜ:´óÕûÊı±È½Ïº¯Êı,-1±íÊ¾±¾´óÕûÊıÒªĞ¡,0±íÊ¾ÏàµÈ,1±íÊ¾±¾´óÕûÊıÒª´ó
+ * ²ÎÊıº¬Òå:val´ú±íÒªÓëÖ®±È½ÏµÄ´óÕûÊı
  */
 int BigInteger::compareTo(const BigInteger& val) const {
-	if (is_negative != val.is_negative) {// ç¬¦å·ä¸åŒ,è´Ÿæ•°å¿…å°
+	if (is_negative != val.is_negative) {// ·ûºÅ²»Í¬,¸ºÊı±ØĞ¡
 		if (is_negative == true)
 			return -1;
 		return 1;
 	}
 	int flag = 0;
-	if (data.size() < val.data.size())// ä½æ•°è¾ƒå°
+	if (data.size() < val.data.size())// Î»Êı½ÏĞ¡
 		flag = -1;
-	else if (data.size() > val.data.size())// ä½æ•°è¾ƒå¤§
+	else if (data.size() > val.data.size())// Î»Êı½Ï´ó
 		flag = 1;
-	else {    // ä½æ•°ç›¸ç­‰,ä»é«˜ä½å¼€å§‹ä¸€ä¸€æ¯”è¾ƒ
+	else {    // Î»ÊıÏàµÈ,´Ó¸ßÎ»¿ªÊ¼Ò»Ò»±È½Ï
 		for (std::vector<base_t>::const_reverse_iterator it = data.rbegin(), ite = val.data.rbegin(); it != data.rend(); ++it, ++ite)
 			if ((*it) != (*ite)) {
-				flag = (*it) < (*ite) ? -1 : 1;    // é«˜ä½å°,åˆ™å°
+				flag = (*it) < (*ite) ? -1 : 1;    // ¸ßÎ»Ğ¡,ÔòĞ¡
 				break;
 			}
 	}
-	if (is_negative)    // å¦‚ä¸ºè´Ÿæ•°,å°çš„åè€Œå¤§
+	if (is_negative)    // ÈçÎª¸ºÊı,Ğ¡µÄ·´¶ø´ó
 		flag = -flag;
 	return flag;
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å¤§æ•´æ•°æ˜¯å¦ç›¸ç­‰å‡½æ•°
- * å‚æ•°å«ä¹‰:valè¡¨ç¤ºè¦ä¸ä¹‹æ¯”è¾ƒçš„å¤§æ•´æ•°
+ * º¯Êı¹¦ÄÜ:´óÕûÊıÊÇ·ñÏàµÈº¯Êı
+ * ²ÎÊıº¬Òå:val±íÊ¾ÒªÓëÖ®±È½ÏµÄ´óÕûÊı
  */
 bool BigInteger::equals(const BigInteger& val) const {
-	return (is_negative == val.is_negative) && (data == val.data);// ç¬¦å·å’Œæ•°æ®éƒ½è¦ç›¸ç­‰
+	return (is_negative == val.is_negative) && (data == val.data);// ·ûºÅºÍÊı¾İ¶¼ÒªÏàµÈ
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å°†ä¸€ä¸ªlong_tç±»å‹çš„æ•°æ®è½¬æ¢ä¸ºå¤§æ•´æ•°å¹¶è¿”å›
- * å‚æ•°å«ä¹‰:numè¡¨ç¤ºç»™å®šçš„æ•°
+ * º¯Êı¹¦ÄÜ:½«Ò»¸ölong_tÀàĞÍµÄÊı¾İ×ª»»Îª´óÕûÊı²¢·µ»Ø
+ * ²ÎÊıº¬Òå:num±íÊ¾¸ø¶¨µÄÊı
  */
 BigInteger BigInteger::valueOf(const long_t& num) {
 	return BigInteger(num);
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:å°†å¤§æ•´æ•°è½¬æ¢ä¸ºåå…­è¿›åˆ¶å­—ç¬¦ä¸²å¹¶è¿”å›
+ * º¯Êı¹¦ÄÜ:½«´óÕûÊı×ª»»ÎªÊ®Áù½øÖÆ×Ö·û´®²¢·µ»Ø
  */
 std::string BigInteger::toString() const {
 	std::string ans;
 	base_t t = base_num;
-	t <<= base_int - 4;    // ç”¨äºæˆªå–é«˜4ä½
+	t <<= base_int - 4;    // ÓÃÓÚ½ØÈ¡¸ß4Î»
 	for (int i = data.size() - 1; i >= 0; --i) {
 		base_t temp = data[i];
 		for (int j = 0; j < base_char; ++j) {
-			base_t num = t & temp;// æ¯æ¬¡æˆªå–é«˜4ä½
-			num >>= base_int - 4;    // å°†é«˜4ä½ç§»åˆ°ä½4ä½
+			base_t num = t & temp;// Ã¿´Î½ØÈ¡¸ß4Î»
+			num >>= base_int - 4;    // ½«¸ß4Î»ÒÆµ½µÍ4Î»
 			temp <<= 4;
 			if (num < 10)
 				ans.push_back((char)('0' + num));
@@ -457,26 +457,26 @@ std::string BigInteger::toString() const {
 				ans.push_back((char)('A' + num - 10));
 		}
 	}
-	while (ans.size() > 0 && ans.at(0) == '0')// å»æ‰é«˜ä½æ— ç”¨çš„0
+	while (ans.size() > 0 && ans.at(0) == '0')// È¥µô¸ßÎ»ÎŞÓÃµÄ0
 		ans = ans.substr(1);
-	if (ans.empty())    // ç©ºä¸²è¯´æ˜ä¸º0
+	if (ans.empty())    // ¿Õ´®ËµÃ÷Îª0
 		ans.push_back('0');
-	if (is_negative)    // ä¸ºè´Ÿæ•°åŠ ä¸Šè´Ÿå·
+	if (is_negative)    // Îª¸ºÊı¼ÓÉÏ¸ººÅ
 		ans = "-" + ans;
 	return ans;
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:è¿”å›å¤§æ•´æ•°çš„ç»å¯¹å€¼
+ * º¯Êı¹¦ÄÜ:·µ»Ø´óÕûÊıµÄ¾ø¶ÔÖµ
  */
 BigInteger BigInteger::abs() const {
 	BigInteger ans;
-	ans.data = data;// åªå¤åˆ¶æ•°æ®,ç¬¦å·é»˜è®¤ä¸ºæ­£
+	ans.data = data;// Ö»¸´ÖÆÊı¾İ,·ûºÅÄ¬ÈÏÎªÕı
 	return ans;
 }
 
-// ä»¥ä¸‹è¿ç®—ç¬¦é‡è½½å‡½æ•°ä¸»è¦æ˜¯ä¸ºäº†ä½¿å¾—èƒ½ä½¿ç”¨
-// å¤§æ•´æ•°ç±»å‹åƒä½¿ç”¨åŸºæœ¬ç±»å‹ä¸€æ ·,ä¸ä¸€ä¸€ä»‹ç»
+// ÒÔÏÂÔËËã·ûÖØÔØº¯ÊıÖ÷ÒªÊÇÎªÁËÊ¹µÃÄÜÊ¹ÓÃ
+// ´óÕûÊıÀàĞÍÏñÊ¹ÓÃ»ù±¾ÀàĞÍÒ»Ñù,²»Ò»Ò»½éÉÜ
 BigInteger operator + (const BigInteger& a, const BigInteger& b) {
 	BigInteger t(a);
 	return t.add(b);
@@ -576,18 +576,18 @@ std::ostream& operator << (std::ostream& out, const BigInteger& val) {
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:åˆ›å»ºè¯¥å¤§æ•´æ•°çš„ä¸€ä¸ªå‰¯æœ¬,å»é™¤æ‰é«˜ä½æ— ç”¨çš„0åå¹¶è¿”å›
+ * º¯Êı¹¦ÄÜ:´´½¨¸Ã´óÕûÊıµÄÒ»¸ö¸±±¾,È¥³ıµô¸ßÎ»ÎŞÓÃµÄ0ºó²¢·µ»Ø
  */
 BigInteger BigInteger::trim() {
 	size_t cnt = 0;
-	// æ£€æŸ¥é«˜ä½ä¸º0çš„å…ƒç´ çš„æ•°é‡
+	// ¼ì²é¸ßÎ»Îª0µÄÔªËØµÄÊıÁ¿
 	for (std::vector<base_t>::const_reverse_iterator it = data.rbegin(); it != data.rend(); ++it) {
 		if ((*it) == 0)
 			++cnt;
 		else
 			break;
 	}
-	if (cnt == data.size() && cnt > 0)    // åªæœ‰é›¶çš„æƒ…å†µä¿ç•™
+	if (cnt == data.size() && cnt > 0)    // Ö»ÓĞÁãµÄÇé¿ö±£Áô
 		--cnt;
 	BigInteger ans(*this);
 	for (size_t i = 0; i < cnt; ++i)
@@ -596,8 +596,8 @@ BigInteger BigInteger::trim() {
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:æ ¹æ®ç»™å®šçš„å­—ç¬¦ç¡®å®šå®ƒæ‰€å¯¹åº”çš„åè¿›åˆ¶æ•°
- * å‚æ•°å«ä¹‰:chä»£è¡¨ç»™å®šçš„å­—ç¬¦
+ * º¯Êı¹¦ÄÜ:¸ù¾İ¸ø¶¨µÄ×Ö·ûÈ·¶¨ËüËù¶ÔÓ¦µÄÊ®½øÖÆÊı
+ * ²ÎÊıº¬Òå:ch´ú±í¸ø¶¨µÄ×Ö·û
  */
 int BigInteger::hexToNum(char ch) {
 	int ans = 0;
@@ -611,32 +611,32 @@ int BigInteger::hexToNum(char ch) {
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:æ ¹æ®ç»™å®šçš„å¤§æ•´æ•°åˆå§‹åŒ–
- * å‚æ•°å«ä¹‰:valä»£è¡¨ç»™å®šçš„å¤§æ•´æ•°
+ * º¯Êı¹¦ÄÜ:¸ù¾İ¸ø¶¨µÄ´óÕûÊı³õÊ¼»¯
+ * ²ÎÊıº¬Òå:val´ú±í¸ø¶¨µÄ´óÕûÊı
  */
 BigInteger::bit::bit(const BigInteger& val) {
 	bit_vector = val.data;
-	base_t temp = bit_vector[bit_vector.size() - 1];// å¤§æ•´æ•°æœ€é«˜ä½
-	length = bit_vector.size() << base_bit;    // å¤§æ•´æ•°ä¸€ä½å äºŒè¿›åˆ¶32ä½
-	base_t t = 1 << (base_int - 1);    // ç”¨äºæˆªå–ä¸€ä¸ªæ•°çš„äºŒè¿›åˆ¶æœ€é«˜ä½
+	base_t temp = bit_vector[bit_vector.size() - 1];// ´óÕûÊı×î¸ßÎ»
+	length = bit_vector.size() << base_bit;    // ´óÕûÊıÒ»Î»Õ¼¶ş½øÖÆ32Î»
+	base_t t = 1 << (base_int - 1);    // ÓÃÓÚ½ØÈ¡Ò»¸öÊıµÄ¶ş½øÖÆ×î¸ßÎ»
 
-	if (temp == 0)    // å¤§æ•´æ•°æœ€é«˜ä½ä¸º0,å‡å»32
+	if (temp == 0)    // ´óÕûÊı×î¸ßÎ»Îª0,¼õÈ¥32
 		length -= base_int;
 	else {
-		while (!(temp & t)) {// ä»é«˜ä½å¼€å§‹æ£€æµ‹å¤§æ•´æ•°çš„äºŒè¿›åˆ¶ä½,ä¸º0é•¿åº¦å‡ä¸€
+		while (!(temp & t)) {// ´Ó¸ßÎ»¿ªÊ¼¼ì²â´óÕûÊıµÄ¶ş½øÖÆÎ»,Îª0³¤¶È¼õÒ»
 			--length;
-			t >>= 1;    // å³ç§»ä¸€ä½è¡¨ç¤ºæ£€æµ‹ä¸‹ä¸€ä½
+			t >>= 1;    // ÓÒÒÆÒ»Î»±íÊ¾¼ì²âÏÂÒ»Î»
 		}
 	}
 }
 
 /**
- * å‡½æ•°åŠŸèƒ½:æ£€æµ‹å¤§æ•´æ•°çš„ç¬¬idä½äºŒè¿›åˆ¶ä½æ˜¯å¦ä¸º1
- * å‚æ•°å«ä¹‰:idä»£è¡¨ç¬¬idä½
+ * º¯Êı¹¦ÄÜ:¼ì²â´óÕûÊıµÄµÚidÎ»¶ş½øÖÆÎ»ÊÇ·ñÎª1
+ * ²ÎÊıº¬Òå:id´ú±íµÚidÎ»
  */
 bool BigInteger::bit::at(size_t id) {
-	size_t index = id >> base_bit;// ç¡®å®šå…¶åœ¨å¤§æ•´æ•°ç¬¬å‡ ä½
-	size_t shift = id & base_temp;// ç¡®å®šå…¶åœ¨å¤§æ•´æ•°é‚£ä¸€ä½çš„äºŒè¿›åˆ¶ç¬¬å‡ ä½
+	size_t index = id >> base_bit;// È·¶¨ÆäÔÚ´óÕûÊıµÚ¼¸Î»
+	size_t shift = id & base_temp;// È·¶¨ÆäÔÚ´óÕûÊıÄÇÒ»Î»µÄ¶ş½øÖÆµÚ¼¸Î»
 	base_t t = bit_vector[index];
 	return (t & (1 << shift));
 }
